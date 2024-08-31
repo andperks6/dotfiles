@@ -1,0 +1,91 @@
+#!/bin/bash
+
+bootstrap_dir=$(dirname $0)
+
+bootstrap_deps() {
+    if [[ -x "$(command -v brew)" ]]; then
+        brew bundle --no-lock --file "${bootstrap_dir}/Brewfile"
+        brew pin tmux
+        brew update
+        brew upgrade
+    fi
+
+    if [[ "$(uname -s)" == "Linux" && "$(uname -o)" != "Android" ]]; then
+        wsl_sys32_path="/mnt/c/Windows/System32"
+        if [[ ! -d $wsl_sys32_path ]]; then
+            source "${bootstrap_dir}/wezterm.sh"
+            source "${bootstrap_dir}/fonts.sh"
+        fi
+        sudo apt --yes update
+        sudo apt --yes upgrade
+    fi
+}
+
+bootstrap_asdf_tools() {
+    if [[ ! -x "$(command -v asdf)" ]]; then
+        return
+    fi
+    while read -r line; do
+        plugin=$(echo "${line}" | cut -d' ' -f1)
+        asdf plugin add "${plugin}"
+    done < ~/.tool-versions
+    asdf install
+}
+
+bootstrap_libraries() {
+    if [[ ! -x "$(command -v asdf)" ]]; then
+        return
+    fi
+
+    bootstrap_python() {
+        pip install --upgrade pip
+        pip install -r ~/.config/lang/python/requirements.txt
+    }
+
+    bootstrap_rust() {
+        cargo install aoc-cli
+        asdf reshim rust
+    }
+
+    bootstrap_node() {
+        npm install -g npm
+        corepack enable
+        npm install -g neovim
+    }
+
+    bootstrap_ocaml() {
+        # https://discuss.ocaml.org/t/unable-to-install-some-packages-with-opam-on-macos/14434/6
+        opam init --no
+        opam update
+        opam upgrade --yes
+    }
+
+    bootstrap_python
+    bootstrap_rust
+    bootstrap_node
+    bootstrap_ocaml
+}
+
+bootstrap_repos() {
+    if [[ -x "$(command -v ansible-playbook)" ]]; then
+        ansible-playbook -vv "${bootstrap_dir}/setup-repos.yml"
+    fi
+}
+
+if [[ "${#}" -eq 0 ]]; then
+    bootstrap_deps
+    bootstrap_asdf_tools
+    bootstrap_libraries
+    bootstrap_repos
+elif [[ "${#}" -eq 1 ]]; then
+    if [[ "${1}" == "deps" ]]; then
+        bootstrap_deps
+    else
+        echo "Unknown command: ${1}"
+        echo "Commands: deps"
+        exit 1
+    fi
+else
+    echo "Usage: <command>?"
+    exit 1
+fi

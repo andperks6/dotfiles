@@ -1,0 +1,124 @@
+#!/usr/bin/env python
+
+import os
+import subprocess
+from dataclasses import dataclass
+from pathlib import Path
+
+import click
+import git
+import requests
+
+
+@dataclass(frozen=True)
+class GitRemote:
+    name: str
+    url: str
+    auto_creates: bool
+
+
+REMOTES: list[GitRemote] = [
+    GitRemote(name="lab", url="git@gitlab.com", auto_creates=True),
+    GitRemote(name="bit", url="git@bitbucket.org", auto_creates=False),
+]
+
+
+@click.group()
+@click.help_option("-h", "--help")
+def cli() -> None:
+    """Scripts to automate interacting with multiple remotes"""
+    pass
+
+
+@cli.command()
+def sync() -> None:
+    """Sync all repos to remotes"""
+
+    user_name = get_user_name()
+    repo_paths: list[Path] = [
+        Path.home().joinpath(".local/share/yadm/repo.git"),
+    ]
+    repo_paths.extend(repos_in_directory("Documents"))
+    repo_paths.extend(repos_in_directory("dev"))
+
+    for repo_path in repo_paths:
+        repo: git.Repo = git.Repo(repo_path)
+        push_remotes(user_name, repo)
+
+
+def repos_in_directory(directory: str) -> list[Path]:
+    result: list[Path] = []
+    for git_folder in Path.home().joinpath(directory).rglob(".git"):
+        if git_folder.stat().st_size > 0:
+            git_repo: Path = git_folder.parent
+            result.append(git_repo)
+    return result
+
+
+@cli.command()
+def push() -> None:
+    """Push current repo to remotes"""
+
+    user_name = get_user_name()
+    repo: git.Repo = git.Repo()
+    push_remotes(user_name, repo)
+
+
+def get_user_name() -> str:
+    return str(git.GitConfigParser().get_value("user", "name"))
+
+
+def push_remotes(user_name: str, repo: git.Repo) -> None:
+    assert "origin" in repo.remotes
+    origin_url = repo.remotes["origin"].url
+
+    # "git@gh.com:user/aoc.nvim.git" -> "git@gh.com", "user/aoc.nvim.git"
+    repo_host, repo_path = origin_url.split(":")
+    assert repo_host == "git@github.com"
+
+    # "user/aoc.nvim.git" -> "user", "aoc.nvim"
+    owner, name = repo_path.rsplit(".", 1)[0].split("/")
+    if owner != user_name:
+        print(f"Skipping {name}: not owned by {user_name}")
+        return
+
+    if is_fork(user_name, name):
+        print(f"Skipping {name}: fork")
+        return
+
+    for remote in REMOTES:
+        remote_url = ":".join([remote.url, repo_path])
+        if remote.name in repo.remotes:
+            print(f"{remote.name} is already a remote")
+            assert repo.remotes[remote.name].url == remote_url
+        else:
+            assert run_command(repo, ["git", "remote", "add", remote.name, remote_url])
+            assert remote.name in repo.remotes
+
+    for remote in REMOTES:
+        assert run_command(repo, ["git", "push", remote.name])
+
+
+def is_fork(user_name: str, name: str) -> bool:
+    token = os.getenv("GITHUB_TOKEN")
+    assert token is not None, "GITHUB_TOKEN not set"
+    response = requests.get(
+        f"https://api.github.com/repos/{user_name}/{name}",
+        headers={"Authorization": f"token {token}"},
+    )
+    # Assume 404s are caused by own private repos
+    if response.status_code == 404:
+        return False
+    assert response.status_code == 200, "GITHUB_TOKEN is likely expired"
+    return response.json()["fork"]
+
+
+def run_command(repo: git.Repo, command: list[str]) -> bool:
+    # GitPython struggles with yadm so need to run some things directly
+    print(f"Running '{' '.join(command)}' in: {repo.git_dir}")
+    result = subprocess.run(command, cwd=repo.git_dir)
+    return result.returncode == 0
+
+
+if __name__ == "__main__":
+    cli()

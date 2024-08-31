@@ -1,0 +1,10 @@
+[font]
+size = 14.0
+
+[font.normal]
+family = "MonaspiceNe Nerd Font"
+style = "Light"
+
+[window]
+opacity = 0.9
+option_as_alt = "Both"

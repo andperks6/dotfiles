@@ -1,0 +1,8 @@
+[user]
+    name = andperks
+[core]
+    autocrlf = input
+    commentChar = ";"
+    pager = delta
+[delta]
+    side-by-side = true

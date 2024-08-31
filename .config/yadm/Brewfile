@@ -1,0 +1,66 @@
+tap "homebrew/cask"
+
+# Programming Related
+# brew "ansible"
+brew "asdf"
+# brew "bat"
+# brew "curl"
+# brew "fd"
+# brew "fzf"
+# brew "git-delta"
+# brew "jq"
+# brew "just"
+# brew "lazygit"
+# brew "libsodium"
+# brew "pandoc"
+# brew "ripgrep"
+brew "tlrc"
+brew "~/.config/tmux/tmux.rb"
+brew "wget"
+# brew "yadm"
+# brew "zsh-autosuggestions"
+# brew "zsh-syntax-highlighting"
+
+cask "flutter"
+cask "docker"
+
+# Terminals
+cask "alacritty"
+cask "kitty"
+cask "wezterm"
+
+# Fonts
+cask "font-hack-nerd-font"
+cask "font-jetbrains-mono-nerd-font"
+cask "font-monaspace"
+cask "font-monaspace-nerd-font"
+cask "font-symbols-only-nerd-font"
+
+# General
+brew "cmake"
+brew "gnupg" if OS.mac?
+brew "glibc" if OS.linux?
+brew "coreutils" if OS.linux?
+brew "glow"
+brew "oath-toolkit"
+brew "pkg-config"
+brew "xz"
+
+# Code / Text Editors
+# brew "neovim"
+# brew "vim"
+cask "cursor"
+cask "intellij-idea-ce"
+cask "visual-studio-code"
+
+# Productivity Apps
+cask "obsidian"
+cask "discord"
+cask "firefox"
+cask "logi-options-plus"
+cask "nordvpn"
+cask "rectangle"
+
+# Playing Around
+# cask "vlc"
+cask "th-ch/youtube-music/youtube-music"

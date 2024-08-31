@@ -1,0 +1,75 @@
+{
+    "packages": [
+        "git@latest",
+        "htop@latest",
+        "gh@latest",
+        "glab@latest",
+        "fzf@latest",
+        "ripgrep@latest",
+        "vscode@latest",
+        "jq@latest",
+        "yq@latest",
+        "neovim@latest",
+        "neofetch@latest",
+        "btop@latest",
+        "cheat@latest",
+        "bash-preexec@latest",
+        "tree-sitter@latest",
+        "eza@latest",
+        "fd@latest",
+        "bat@latest",
+        "atuin@latest",
+        "zoxide@latest",
+        "direnv@latest",
+        "starship@latest",
+        "just@latest",
+        "pandoc@latest",
+        "delta@latest",
+        "libsodium@latest",
+        "lazygit@latest",
+        "bitwarden-cli@latest",
+        "helix@latest",
+        "aws@latest"
+    ],
+    "env": {
+        "DEVBOX_GLOBAL_PREFIX": "$HOME/.local/share/devbox/global/default/.devbox/nix/profile/default",
+        "DEVBOX_GLOBAL_ROOT": "$HOME/.local/share/devbox/global/current",
+        "DEVBOX_COREPACK_ENABLED": "true"
+    },
+    "shell": {
+        "init_hook": [
+            ". ${DEVBOX_GLOBAL_ROOT}/init.sh"
+        ],
+        "scripts": {
+            "install-astro": [
+                "echo cloning astronvim repo to ~/.config/nvim",
+                "git clone --depth 1 https://github.com/AstroNvim/AstroNvim ~/.config/nvim"
+            ],
+            "install-hook-bash": [
+                "echo adding 'devbox global shellenv' to ~/.bashrc",
+                "grep -qF 'devbox global shellenv' ~/.bashrc || echo 'eval \"$(devbox global shellenv --init-hook)\"' \u003e\u003e ~/.bashrc",
+                "tail -n 1 ~/.bashrc"
+            ],
+            "install-hook-zsh": [
+                "echo adding 'devbox global shellenv' to ~/.zshrc",
+                "grep -qF 'devbox global shellenv' ~/.zshrc || echo 'eval \"$(devbox global shellenv --init-hook)\"' \u003e\u003e ~/.zshrc",
+                "tail -n 1 ~/.zshrc"
+            ],
+            "install-hook-fish": [
+                "echo adding 'devbox global shellenv' to ~/.config/fish/config.fish", 
+                "grep -qF 'devbox global shellenv' ~/.config/fish/config.fish || echo 'devbox global shellenv --init-hook | source' \u003e\u003e ~/.config/fish/config.fish",
+                "tail -n 1 ~/.config/fish/config.fish"
+            ],
+            "install-starship-prompt": [
+                "if [ ! -f $HOME/.config/starship.toml ]",
+                "then",
+                "curl -fsSL https://devbox.getfleek.dev/config/starship/starship.toml \u003e $HOME/.config/starship.toml",
+                "fi"
+            ],
+            "latest-hash": [
+                "curl -fsSL https://nixos.org/channels/nixos-unstable/git-revision"
+            ]
+        }
+    },
+    "nixpkgs": {}
+}

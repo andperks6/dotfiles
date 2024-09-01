@@ -46,7 +46,7 @@ bootstrap_libraries() {
         cargo install aoc-cli
         asdf reshim rust
     }
-
+ 
     bootstrap_node() {
         npm install -g npm
         corepack enable
@@ -66,6 +66,11 @@ bootstrap_libraries() {
     bootstrap_ocaml
 }
 
+bootstrap_crypt() {
+    yadm decrypt
+    source "${bootstrap_dir}/setup_git.sh"
+}
+
 bootstrap_repos() {
     if [[ -x "$(command -v ansible-playbook)" ]]; then
         ansible-playbook -vv "${bootstrap_dir}/setup-repos.yml"
@@ -76,6 +81,7 @@ if [[ "${#}" -eq 0 ]]; then
     bootstrap_deps
     bootstrap_asdf_tools
     bootstrap_libraries
+    bootstrap_crypt
     bootstrap_repos
 elif [[ "${#}" -eq 1 ]]; then
     if [[ "${1}" == "deps" ]]; then

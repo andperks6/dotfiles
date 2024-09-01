@@ -3,6 +3,7 @@ tap "homebrew/cask"
 # Programming Related
 brew "ansible"
 brew "asdf"
+brew "bitwarden-cli"
 # brew "bat"
 # brew "curl"
 # brew "fd"

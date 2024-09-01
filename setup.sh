@@ -161,9 +161,6 @@ case ${1} in
   "devbox")
     setup_devbox
     ;; 
-#   "git")
-#     setup_git
-#     ;;
   "yadm")
     install_yadm
     ;;

@@ -6,7 +6,6 @@
         "glab@latest",
         "fzf@latest",
         "ripgrep@latest",
-        "vscode@latest",
         "jq@latest",
         "yq@latest",
         "neovim@latest",
@@ -27,7 +26,6 @@
         "delta@latest",
         "libsodium@latest",
         "lazygit@latest",
-        "bitwarden-cli@latest",
         "helix@latest",
         "aws@latest"
     ],

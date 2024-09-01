@@ -16,7 +16,7 @@ Using [yadm](https://yadm.io/) to store all my dotfiles
 ## Download Setup Script
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/andperks6/dotfiles/main/docs/setup.sh -o setup.sh && chmod +x setup.sh
+curl -fsSL https://raw.githubusercontent.com/andperks6/dotfiles/main/setup.sh -o setup.sh && chmod +x setup.sh
 ```
 
 ## Execute Script Commands in Order

@@ -118,8 +118,10 @@ brew_install() {
 }
 
 setup_devbox() {
-    curl -fsSL https://get.jetify.com/devbox | bash
-    devbox global pull https://github.com:andperks6/dotfiles/.config/devbox/devbox.json
+    if [[ -z $(command -v devbox) ]]; then
+        curl -fsSL https://get.jetify.com/devbox | bash
+    fi
+    devbox global pull https://raw.githubusercontent.com/andperks6/dotfiles/main/.config/devbox/devbox.json
 }
 
 install_yadm() {

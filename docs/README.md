@@ -47,11 +47,11 @@ curl -fsSL https://raw.githubusercontent.com/andperks6/dotfiles/main/docs/setup.
 
 | Command             | Description                                      |
 | ------------------- | ------------------------------------------------ |
-| `./setup.sh deps`   | Installs dependencies                            |
-| `./setup.sh brew`   | Installs [homebrew](https://brew.sh/)            |
+| `./setup.sh deps`   | Installs dependencies (linux only)               |
+| `./setup.sh brew`   | Installs homebrew                                |
 | `./setup.sh shell`  | Adds fish and zsh, changes default to fish       |
 | `./setup.sh zsh`    | adds zim to zsh                                  |
-| `./setup.sh devbox` | adds zim to zsh                                  |
+| `./setup.sh devbox` | sets up devbox and global packages               |
 | `./setup.sh git`    | configures git                                   |
 | `./setup.sh yadm`   | Installs [yadm](https://yadm.io/) and bootstraps |
 | `./setup.sh clean`  | Deletes the setup script                         |
@@ -60,14 +60,5 @@ curl -fsSL https://raw.githubusercontent.com/andperks6/dotfiles/main/docs/setup.
 brew for applications, particularly for casks for [precompiled binaries](https://www.reddit.com/r/Nix/comments/zdcteb/comment/iz2poto/)
 brew for languages with version management and package managers that require global state [npm and python global packages don't work](https://github.com/jetify-com/devbox/issues/17)
 devbox for tools needed on any project like git 
-# Optional
 
-## Install Nix
 
-[Doc](https://nixos.org/)
-
-Uses [Determinate Installer](https://github.com/DeterminateSystems/nix-installer)
-
-```bash
-curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
-```

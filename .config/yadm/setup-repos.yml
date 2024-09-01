@@ -6,14 +6,6 @@
     open_source: '{{ lookup("env", "HOME") }}/dev/repos/open-source'
 
   tasks:
-  # - name: 'Clone documents repos'
-  #   git:
-  #     repo: 'git@github.com:andperks/{{ item }}.git'
-  #     dest: '{{ documents }}/{{ item }}'
-  #   loop:
-  #     - notes
-  #     - pass
-
   - name: 'Clone personal repos'
     git:
       repo: 'git@github.com:andperks/{{ item }}.git'
@@ -30,9 +22,9 @@
       - cli
       - pass-yank
 
-  - name: 'Clone open source repos'
-    git:
-      repo: 'git@github.com:{{ item.user }}/{{ item.name }}.git'
-      dest: '{{ open_source }}/{{ item.name }}'
-    loop:
-      - { user: 'kdheepak', name: 'panvimdoc' }
+  # - name: 'Clone open source repos'
+  #   git:
+  #     repo: 'git@github.com:{{ item.user }}/{{ item.name }}.git'
+  #     dest: '{{ open_source }}/{{ item.name }}'
+  #   loop:
+  #     - { user: 'kdheepak', name: 'panvimdoc' }

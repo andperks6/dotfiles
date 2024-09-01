@@ -1,7 +1,7 @@
 tap "homebrew/cask"
 
 # Programming Related
-# brew "ansible"
+brew "ansible"
 brew "asdf"
 # brew "bat"
 # brew "curl"

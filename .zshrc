@@ -1,8 +1,3 @@
-export PATH=/opt/homebrew/bin:$PATH
-
-# ---- What gets displayed on line running command ---- #
-PS1='%n@%m %~$ '
-
 # ---- XDG Base Directory ---- #
 # https://wiki.archlinux.org/title/XDG_Base_Directory
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"    # Configurations
@@ -10,6 +5,18 @@ export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"       # Non-essential (c
 export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"   # State data that should persist between restarts
 export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}" # State data but is not important or portable enough
 export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-${TMPDIR:-/tmp}}"  # Non-essential runtime files and other file objects
+
+
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# ---- What gets displayed on line running command ---- #
+PS1='%n@%m %~$ '
+
 
 # ---- History configuration ---- #
 zsh_state_home="${XDG_STATE_HOME}/zsh"
@@ -25,6 +32,7 @@ setopt share_history
 
 # ---- Run main shell setup ---- #
 shell_main() {
+    source "${XDG_CONFIG_HOME}/shell/zim.zsh"
     source "${XDG_CONFIG_HOME}/shell/all.sh"
 }
 
@@ -36,3 +44,7 @@ if [[ -x "$(command -v gdate)" ]]; then
 else
     shell_main
 fi
+
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

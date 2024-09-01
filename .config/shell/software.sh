@@ -149,15 +149,6 @@ register_click_completion "git-remote"
 register_click_completion "llm"
 register_click_completion "pr"
 
-# ---- Plugins ---- #
-load_zsh_plugin() {
-    plugin_init="$HOMEBREW_PREFIX/share/${1}/${1}.zsh"
-    [[ -f $plugin_init ]] && source "${plugin_init}"
-}
-
-load_zsh_plugin "zsh-autosuggestions"
-load_zsh_plugin "zsh-syntax-highlighting"
-
 # ---- Editor with Aliases ---- #
 
 # Change default editor
@@ -186,18 +177,18 @@ vim() {
 
 # ---- VIM Mode and Keybindings ---- #
 
-# Use vi mode, set explicitly
-bindkey -v
-# Fix vi mode search behavior for <esc>+/
-vi-search-fix() {
-    zle vi-cmd-mode
-    zle .vi-history-search-backward
-}
-zle -N vi-search-fix
-# For all valid escape sequences: man zshzle
-bindkey -M viins "\e/" vi-search-fix
-# Fix ability to delete characters
-bindkey "^?" backward-delete-char
-# Prefix based search
-bindkey "^[[A" history-search-backward
-bindkey "^[[B" history-search-forward
+# # Use vi mode, set explicitly
+# bindkey -v
+# # Fix vi mode search behavior for <esc>+/
+# vi-search-fix() {
+#     zle vi-cmd-mode
+#     zle .vi-history-search-backward
+# }
+# zle -N vi-search-fix
+# # For all valid escape sequences: man zshzle
+# bindkey -M viins "\e/" vi-search-fix
+# # Fix ability to delete characters
+# bindkey "^?" backward-delete-char
+# # Prefix based search
+# bindkey "^[[A" history-search-backward
+# bindkey "^[[B" history-search-forward

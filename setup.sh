@@ -139,6 +139,20 @@ install_yadm() {
     fi
 }
 
+chezmoi_() {
+    # https://formulae.brew.sh/formula/chezmoi
+    brew_install "chezmoi"
+
+    echo "Cloning dotfiles repo"
+    c_dir="$HOME/.local/share/chezmoi"
+    if [[ -d $c_dir ]]; then
+        echo "  Already applied"
+    else
+        chezmoi init --apply andperks6
+        echo "  Done"
+    fi
+}
+
 cleanup_script() {
     echo "Deleting setup.sh"
     rm -rf "setup.sh"

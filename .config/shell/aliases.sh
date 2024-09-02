@@ -1,5 +1,5 @@
 # General
-alias reload="source ~/.zshrc"
+alias reload="exec zsh"
 alias update-sys="yadm pull && yadm bootstrap"
 alias ll="ls -latrh"
 alias workspace="cd ~/dev"

@@ -14,13 +14,14 @@ if not functions --query fisher
 end
 
 #enable devbox
-devbox global shellenv --init-hook | source
+# devbox global shellenv --init-hook | source
+devbox global shellenv --init-hook --recompute | sed -e 's/; then/;/'| sed -e 's/^fi/end/' | sed -e 's/hash -r//' | source
 
 # Enable starship
 starship init fish | source
-
+zoxide init fish | source
 # Enable direnv
-eval (direnv hook fish)
+# eval (direnv hook fish)
 
 # nix flakes needs this
 set -x NIXPKGS_ALLOW_UNFREE 1
@@ -35,6 +36,6 @@ end
 set -x NIX_REMOTE daemon
 
 #aliases
-source "${XDG_CONFIG_HOME}/shell/aliases.sh"
+source ~/.config/shell/aliases.sh
 alias reload="source ~/.config/fish/config.fish"
 

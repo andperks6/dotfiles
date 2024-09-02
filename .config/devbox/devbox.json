@@ -8,6 +8,9 @@
         "ripgrep@latest",
         "jq@latest",
         "yq@latest",
+        "tlrc@latest",
+        "tmux@latest",
+        "wget@latest",
         "neovim@latest",
         "neofetch@latest",
         "btop@latest",
@@ -36,7 +39,7 @@
     },
     "shell": {
         "init_hook": [
-            ". ${DEVBOX_GLOBAL_ROOT}/init.sh"
+            ". ~/.config/devbox/init.sh"
         ],
         "scripts": {
             "install-astro": [
@@ -52,11 +55,6 @@
                 "echo adding 'devbox global shellenv' to ~/.zshrc",
                 "grep -qF 'devbox global shellenv' ~/.zshrc || echo 'eval \"$(devbox global shellenv --init-hook)\"' \u003e\u003e ~/.zshrc",
                 "tail -n 1 ~/.zshrc"
-            ],
-            "install-hook-fish": [
-                "echo adding 'devbox global shellenv' to ~/.config/fish/config.fish", 
-                "grep -qF 'devbox global shellenv' ~/.config/fish/config.fish || echo 'devbox global shellenv --init-hook | source' \u003e\u003e ~/.config/fish/config.fish",
-                "tail -n 1 ~/.config/fish/config.fish"
             ],
             "install-starship-prompt": [
                 "if [ ! -f $HOME/.config/starship.toml ]",

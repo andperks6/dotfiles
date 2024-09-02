@@ -1,3 +1,5 @@
+
+
 # ---- XDG Base Directory ---- #
 # https://wiki.archlinux.org/title/XDG_Base_Directory
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"    # Configurations
@@ -6,6 +8,10 @@ export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"   # State data that 
 export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}" # State data but is not important or portable enough
 export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-${TMPDIR:-/tmp}}"  # Non-essential runtime files and other file objects
 
+# # tmux with p10k https://github.com/romkatv/powerlevel10k/issues/1203#issuecomment-754805535
+# if [ -z "$TMUX" ]; then
+#   exec tmux new-session -A -s workspace
+# fi
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
@@ -13,6 +19,8 @@ export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-${TMPDIR:-/tmp}}"  # Non-essential ru
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
+
+
 
 # ---- What gets displayed on line running command ---- #
 PS1='%n@%m %~$ '
@@ -29,6 +37,11 @@ HISTFILE="$zsh_state_home/history"
 setopt append_history
 setopt inc_append_history
 setopt share_history
+
+eval "$(devbox global shellenv --init-hook)"
+eval "$(zoxide init zsh)"
+
+
 
 # ---- Run main shell setup ---- #
 shell_main() {

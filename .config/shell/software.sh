@@ -7,7 +7,7 @@ if [[ -z $HOMEBREW_PREFIX ]]; then
     if [[ "${system_type}" == "Darwin" ]]; then
         brew_path="/opt/homebrew/bin/brew"
         # Add services
-        services+=("ollama")
+        # services+=("ollama")
     elif [[ "${system_type}" == "Linux" ]]; then
         brew_path="/home/linuxbrew/.linuxbrew/bin/brew"
         # Building python with asdf: https://github.com/pyenv/pyenv/pull/2906
@@ -126,7 +126,7 @@ FPATH="$HOMEBREW_PREFIX/share/zsh/site-functions:${FPATH}"
 
 # man zshcompsys
 zstyle ':completion:*' cache-path "${zsh_cache_home}/compcache"
-autoload -Uz compinit && compinit -d "${zsh_cache_home}/compdump"
+# autoload -Uz compinit && compinit -d "${zsh_cache_home}/compdump"
 
 completions_home="${XDG_DATA_HOME}/completions"
 [[ ! -d $completions_home ]] && mkdir -p $completions_home

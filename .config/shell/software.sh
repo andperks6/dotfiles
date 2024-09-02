@@ -98,7 +98,7 @@ export PASSWORD_STORE_ENABLE_EXTENSIONS=true
 [[ -z $SSH_AUTH_SOCK ]] && eval "$(ssh-agent -s)"
 
 # fzf
-[[ -x "$(command -v fzf)" ]] && eval $(fzf --zsh)
+# [[ -x "$(command -v fzf)" ]] && eval $(fzf --zsh)
 
 # ---- PATH ---- #
 

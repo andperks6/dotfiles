@@ -30,11 +30,9 @@ alias yac="yadm add ~/docs/ ~/.config/alacritty/ ~/.config/git/ ~/.config/helix/
 alias yls="yadm ls-files ~"
 alias yd="yadm diff"
 
-# bat
 # bat --plain for unformatted cat
 alias catp='bat -P'
 # replace cat with bat
 alias cat='bat'
-# zoxide
 # zoxide for smart cd
 alias cd='z'

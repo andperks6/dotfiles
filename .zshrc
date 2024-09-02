@@ -41,8 +41,6 @@ setopt share_history
 eval "$(devbox global shellenv --init-hook)"
 eval "$(zoxide init zsh)"
 
-
-
 # ---- Run main shell setup ---- #
 shell_main() {
     source "${XDG_CONFIG_HOME}/shell/zim.zsh"

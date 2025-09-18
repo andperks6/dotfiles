@@ -1,7 +1,6 @@
-tap "homebrew/cask"
 
 # Programming Related
-brew "ansible"
+# brew "ansible"
 brew "asdf"
 brew "bitwarden-cli"
 brew "ollama"
@@ -25,6 +24,7 @@ brew "ollama"
 
 cask "flutter"
 cask "docker"
+brew "k9s"
 
 # Terminals
 cask "alacritty"

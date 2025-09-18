@@ -4,7 +4,7 @@ bootstrap_dir=$(dirname $0)
 
 bootstrap_deps() {
     if [[ -x "$(command -v brew)" ]]; then
-        brew bundle --no-lock --file "${bootstrap_dir}/Brewfile"
+        brew bundle --file "${bootstrap_dir}/Brewfile"
         brew pin tmux
         brew update
         brew upgrade

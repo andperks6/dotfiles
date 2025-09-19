@@ -4,6 +4,7 @@
 brew "asdf"
 brew "bitwarden-cli"
 brew "ollama"
+brew "opentofu"
 # brew "bat"
 # brew "curl"
 # brew "fd"

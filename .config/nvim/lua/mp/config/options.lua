@@ -57,7 +57,7 @@ vim.opt.sidescrolloff = 8
 vim.opt.clipboard = 'unnamedplus'
 
 -- Disable default providers
-for _, provider in ipairs({ 'python3', 'ruby', 'node', 'perl' }) do
+for _, provider in ipairs({ 'python3', 'ruby', 'node' }) do
     vim.g['loaded_' .. provider .. '_provider'] = 0
 end
 

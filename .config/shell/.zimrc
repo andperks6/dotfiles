@@ -40,6 +40,6 @@ zmodule zsh-users/zsh-history-substring-search
 zmodule fzf
 zmodule archive
 zmodule direnv
-zmodule exa
+zmodule eza
 zmodule duration-info
 zmodule kiesman99/zim-zoxide

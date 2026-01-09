@@ -58,10 +58,9 @@ setopt append_history
 setopt inc_append_history
 setopt share_history
 
-eval "$(devbox global shellenv --init-hook)"
-
 if [[ "$CLAUDECODE" != "1" ]]; then
     eval "$(zoxide init zsh)"
+    eval "$(atuin init zsh)"
 fi
 
 # ---- Run main shell setup ---- #

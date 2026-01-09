@@ -70,10 +70,19 @@ bootstrap_libraries() {
         fi
     }
 
+    bootstrap_neovim() {
+        # Install AstroNvim if nvim config doesn't exist
+        if [[ ! -d ~/.config/nvim ]]; then
+            echo "Installing AstroNvim..."
+            git clone --depth 1 https://github.com/AstroNvim/AstroNvim ~/.config/nvim
+        fi
+    }
+
     bootstrap_python
     bootstrap_rust
     bootstrap_node
     bootstrap_java
+    bootstrap_neovim
 }
 
 bootstrap_crypt() {

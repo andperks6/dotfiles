@@ -3,27 +3,24 @@ if [[ ! -x "$(command -v tmux)" ]]; then
     return
 fi
 
-# ---- Skip if some terminal is already attached ---- #
-attached_sessions=$(tmux ls 2> /dev/null | grep attached)
-if [[ ${#attached_sessions} != 0 ]]; then
+# ---- Skip if in VSCode terminal ---- #
+if [[ -n "$VSCODE_INJECTION" ]] || [[ "$TERM_PROGRAM" == "vscode" ]]; then
     return
 fi
 
-start_new_session() {
-    if [[ "$#" -ne 2 ]]; then
-        echo "Usage $0: session_name command_name"
-        return
-    fi
-    # Only create a new session if one isn't currently running
-    existing_session=$(tmux ls 2> /dev/null | grep "$1")
-    if [[ ${#existing_session} == 0 ]]; then
-        tmux new -d -s "$1"
-        tmux send-keys -t "$1" "$2" ENTER
-    fi
-}
+# ---- Skip if already in tmux ---- #
+if [[ -n "$TMUX" ]]; then
+    return
+fi
 
-start_new_session "main" "workspace"
-start_new_session "notes" "notes"
+# Auto-launch sesh session picker with sesh
+if [[ -x "$(command -v sesh)" ]]; then
+    # Show session picker on terminal start
+    selected=$(sesh list -t -c | fzf --height 40% --reverse --border-label ' sesh ' --border --prompt '⚡  ')
 
-# ---- Attach to main session ---- #
-tmux attach -t "main"
+    # Only connect if user selected something (not cancelled with Esc)
+    if [[ -n "$selected" ]]; then
+        exec sesh connect "$selected"
+    fi
+    # If cancelled, continue with normal shell
+fi

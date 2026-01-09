@@ -1,17 +1,17 @@
 # awscli 2.15.50
-bun 1.2.22
-dotnet-core 9.0.305
-golang 1.25.1
-gradle 9.1
-java temurin-21.0.1+12.0.LTS
-kotlin 2.2.20
-lua 5.1
-nodejs 22.18.0
-opam 2.4.1
-poetry 1.8.3
-python 3.12.0
-ruby 3.2.2
-rust 1.90.0
-scala 3.4.1
-terraform 1.13.3
-zig 0.15.1
+# bun 1.3.4
+# dotnet-core 9.0.305
+# golang 1.25.1
+# gradle 9.1
+# java temurin-21.0.1+12.0.LTS
+# kotlin 2.2.20
+# lua 5.1
+# nodejs 22.21.1
+# opam 2.4.1
+# poetry 1.8.4
+# python 3.14.0
+# ruby 3.2.2
+# rust 1.90.0
+# scala 3.4.1
+# terraform 1.13.3
+# zig 0.16.0

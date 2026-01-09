@@ -1,9 +1,13 @@
 
 # Programming Related
-brew "asdf"
 brew "bitwarden-cli"
 brew "ollama"
-brew "opentofu"
+brew "mise"
+brew "sesh"
+brew "gh"
+
+cask "claude-code"
+
 # brew "bat"
 # brew "curl"
 # brew "fd"
@@ -23,19 +27,19 @@ brew "opentofu"
 # brew "zsh-syntax-highlighting"
 
 cask "flutter"
-cask "docker"
+cask "docker-desktop"
 brew "k9s"
 
 # Terminals
 cask "alacritty"
-cask "kitty"
 cask "wezterm"
+cask "warp"
 
 # Fonts
 cask "font-hack-nerd-font"
 cask "font-jetbrains-mono-nerd-font"
 cask "font-monaspace"
-cask "font-monaspace-nerd-font"
+cask "font-monaspice-nerd-font"
 cask "font-symbols-only-nerd-font"
 
 # General
@@ -65,4 +69,4 @@ cask "rectangle"
 
 # Playing Around
 # cask "vlc"
-cask "th-ch/youtube-music/youtube-music"
+cask "pear-devs/pear/pear-desktop"

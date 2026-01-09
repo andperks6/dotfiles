@@ -32,9 +32,6 @@ fi
 # Gradle
 export GRADLE_USER_HOME="${XDG_DATA_HOME}/gradle"
 
-# Opam
-export OPAMROOT="${XDG_DATA_HOME}/opam"
-
 # C#
 export DOTNET_CLI_HOME="${XDG_DATA_HOME}/dotnet"
 
@@ -44,23 +41,10 @@ export NODE_REPL_HISTORY="${XDG_DATA_HOME}/node_repl_history"
 
 # ---- Language Setup ---- #
 
-# ASDF
-export ASDF_DATA_DIR="${XDG_DATA_HOME}/asdf"
-export ASDF_FORCE_PREPEND="yes"
-asdf_src="${HOMEBREW_PREFIX}/opt/asdf/libexec/asdf.sh"
-[[ -f $asdf_src ]] && source "${asdf_src}"
-
-# Java
-java_init="${ASDF_DATA_DIR}/plugins/java/set-java-home.zsh"
-[[ -f $java_init ]] && source "${java_init}"
-
-# Opam
-opam_init="${OPAMROOT}/opam-init/init.zsh"
-[[ -f $opam_init ]] && source "${opam_init}"
-
-# C#
-c_sharp_init="${ASDF_DATA_DIR}/plugins/dotnet-core/set-dotnet-home.zsh"
-[[ -f $c_sharp_init ]] && source "${c_sharp_init}"
+# Mise (replaces asdf)
+if [[ -x "$(command -v mise)" ]]; then
+    eval "$(mise activate zsh)"
+fi
 
 # Lua
 [[ -x "$(command -v luarocks)" ]] && eval $(luarocks path --bin)
@@ -134,7 +118,7 @@ register_click_completion() {
         # Only re-generate completions outside of TMUX
         if [[ ! -f $completion_file || -z $TMUX ]]; then
             click_variable=$(echo ${1} | tr '[:lower:]' '[:upper:]' | tr '-' '_')
-            eval "_${click_variable}_COMPLETE=zsh_source ${1} > ${completion_file}"
+            eval "_${click_variable}_COMPLETE=zsh_source ${1} >| ${completion_file} 2>/dev/null"
         fi
         source "${completion_file}"
     fi

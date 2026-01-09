@@ -1,5 +1,6 @@
 [user]
-    name = andperks
+	name = Andrew Perkins
+	email = aperkins@blackthornsoftware.com
 [core]
     autocrlf = input
     commentChar = ";"

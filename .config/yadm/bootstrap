@@ -21,31 +21,29 @@ bootstrap_deps() {
     fi
 }
 
-bootstrap_asdf_tools() {
-    if [[ ! -x "$(command -v asdf)" ]]; then
+bootstrap_mise_tools() {
+    if [[ ! -x "$(command -v mise)" ]]; then
+        echo "Warning: mise not installed, skipping tool installation"
         return
     fi
-    asdf plugin-add direnv
-    while read -r line; do
-        plugin=$(echo "${line}" | cut -d' ' -f1)
-        asdf plugin add "${plugin}"
-    done < ~/.tool-versions
-    asdf install
+    # Install all tools from mise config
+    mise install
+
 }
 
 bootstrap_libraries() {
-    if [[ ! -x "$(command -v asdf)" ]]; then
+    if [[ ! -x "$(command -v mise)" ]]; then
+        echo "Warning: mise not installed, skipping library installation"
         return
     fi
 
     bootstrap_python() {
-        pip install --upgrade pip
-        pip install -r ~/.config/lang/python/requirements.txt
+        uv pip install -r ~/.config/lang/python/requirements.txt
     }
 
     bootstrap_rust() {
         cargo install aoc-cli
-        asdf reshim rust
+        mise reshim
     }
  
     bootstrap_node() {
@@ -53,18 +51,29 @@ bootstrap_libraries() {
         corepack enable
         npm install -g neovim
     }
+    
+    bootstrap_java() {
+        # macOS Java integration - link Java to system location for JAVA_HOME
+        if [[ "$(uname -s)" == "Darwin" ]]; then
+            # Get installed Java version from mise
+            java_version=$(mise current java 2>/dev/null | awk '{print $2}')
+            if [[ -n "$java_version" ]]; then
+                java_install_path="${XDG_DATA_HOME}/mise/installs/java/${java_version}"
+                java_system_path="/Library/Java/JavaVirtualMachines/mise-${java_version}.jdk"
 
-    bootstrap_ocaml() {
-        # https://discuss.ocaml.org/t/unable-to-install-some-packages-with-opam-on-macos/14434/6
-        opam init --no
-        opam update
-        opam upgrade --yes
+                if [[ -d "$java_install_path/Contents" ]] && [[ ! -e "$java_system_path" ]]; then
+                    echo "Setting up macOS Java integration for ${java_version}"
+                    sudo mkdir -p "$java_system_path"
+                    sudo ln -sf "$java_install_path/Contents" "$java_system_path/Contents"
+                fi
+            fi
+        fi
     }
 
     bootstrap_python
     bootstrap_rust
     bootstrap_node
-    bootstrap_ocaml
+    bootstrap_java
 }
 
 bootstrap_crypt() {
@@ -78,23 +87,36 @@ bootstrap_repos() {
     fi
 }
 
-if [[ "${#}" -eq 0 ]]; then
-    bootstrap_deps
-    bootstrap_asdf_tools
-    bootstrap_libraries
-    bootstrap_crypt
-    bootstrap_repos
-elif [[ "${#}" -eq 1 ]]; then
-    if [[ "${1}" == "deps" ]]; then
+case "${1:-all}" in
+    all)
         bootstrap_deps
-    elif [[ "${1}" == "asdf" ]]; then
-        bootstrap_asdf_tools
-    else
-        echo "Unknown command: ${1}"
-        echo "Commands: deps, asdf"
+        bootstrap_mise_tools
+        bootstrap_libraries
+        bootstrap_crypt
+        bootstrap_repos
+        ;;
+    deps|brew)
+        bootstrap_deps
+        ;;
+    mise|tools)
+        bootstrap_mise_tools
+        ;;
+    libs|libraries)
+        bootstrap_libraries
+        ;;
+    crypt)
+        bootstrap_crypt
+        ;;
+    repos)
+        bootstrap_repos
+        ;;
+    asdf)
+        echo "Warning: no more asdf, use 'mise' instead"
+        bootstrap_mise_tools
+        ;;
+    *)
+        echo "Usage: yadm bootstrap [command]"
+        echo "Commands: deps, mise, libs, crypt, repos (default: all)"
         exit 1
-    fi
-else
-    echo "Usage: <command>?"
-    exit 1
-fi
+        ;;
+esac

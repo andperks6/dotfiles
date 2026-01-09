@@ -2,17 +2,20 @@ local wezterm = require('wezterm')
 local config = wezterm.config_builder()
 
 local bar = wezterm.plugin.require("https://github.com/adriankarlen/bar.wezterm")
-bar.apply_to_config(config)
 
 
 -- config.color_scheme = 'Ayu Mirage'
 -- config.color_scheme = 'Catppuccin Mocha'
+config.enable_tab_bar = true
+bar.apply_to_config(config)
+
 config.color_scheme = 'ayu'
 
-config.font = wezterm.font('Monaspace Neon')
-config.font_size = 14.0
+-- config.font = wezterm.font('Monaspace Neon')
+config.font_size = 13.0
 
-config.enable_tab_bar = true
+
+
 wezterm.on('format-window-title', function()
     return 'WezTerm'
 end)

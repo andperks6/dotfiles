@@ -8,10 +8,30 @@ export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"   # State data that 
 export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}" # State data but is not important or portable enough
 export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-${TMPDIR:-/tmp}}"  # Non-essential runtime files and other file objects
 
-# # tmux with p10k https://github.com/romkatv/powerlevel10k/issues/1203#issuecomment-754805535
-# if [ -z "$TMUX" ]; then
-#   exec tmux new-session -A -s workspace
+
+# if [[ -z "$VSCODE_CWD" ]]; then
+#     # Commands to start tmux or attach to a session
+#     # For example: tmux new-session -A -s my_session
+#     if [ -z "$TMUX" ]; then
+#         # tmux with p10k https://github.com/romkatv/powerlevel10k/issues/1203#issuecomment-754805535
+#         exec tmux new-session -A -s workspace
+#     fi
 # fi
+
+
+
+# tmux_run() {
+#   parent_process=$(ps -p $PPID -o comm=)
+#     # don't start in vscode
+#     if [[ "$parent_process" != "code" ]]; then
+#         if [ -z "$TMUX" ]; then
+#             # tmux with p10k https://github.com/romkatv/powerlevel10k/issues/1203#issuecomment-754805535
+#             exec tmux new-session -A -s workspace
+#         fi
+#     fi
+# }
+
+# tmux_run
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
@@ -21,8 +41,6 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 (( ${+commands[direnv]} )) && emulate zsh -c "$(direnv hook zsh)"
-
-
 
 # ---- What gets displayed on line running command ---- #
 PS1='%n@%m %~$ '
@@ -41,7 +59,10 @@ setopt inc_append_history
 setopt share_history
 
 eval "$(devbox global shellenv --init-hook)"
-eval "$(zoxide init zsh)"
+
+if [[ "$CLAUDECODE" != "1" ]]; then
+    eval "$(zoxide init zsh)"
+fi
 
 # ---- Run main shell setup ---- #
 shell_main() {
@@ -53,7 +74,7 @@ if [[ -x "$(command -v gdate)" ]]; then
     sh_start_time=$(gdate +%s%3N)
     shell_main
     sh_end_time=$(gdate +%s%3N)
-    echo "Start time: $((sh_end_time - sh_start_time))ms"
+    echo "Start time: $((sh_end_time - sh_start_time))ms" >&2
 else
     shell_main
 fi

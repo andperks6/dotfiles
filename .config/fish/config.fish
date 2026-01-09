@@ -39,3 +39,6 @@ set -x NIX_REMOTE daemon
 source ~/.config/shell/aliases.sh
 alias reload="source ~/.config/fish/config.fish"
 
+# Sesh keybinding - Alt+s to open session picker
+bind \es sesh-sessions
+

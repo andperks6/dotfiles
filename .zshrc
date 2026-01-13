@@ -1,4 +1,5 @@
-
+# ---- Profiling (run: ZSH_PROFILE=1 zsh) ---- #
+[[ "$ZSH_PROFILE" == "1" ]] && zmodload zsh/zprof
 
 # ---- XDG Base Directory ---- #
 # https://wiki.archlinux.org/title/XDG_Base_Directory
@@ -58,26 +59,23 @@ setopt append_history
 setopt inc_append_history
 setopt share_history
 
-if [[ "$CLAUDECODE" != "1" ]]; then
-    eval "$(zoxide init zsh)"
-    eval "$(atuin init zsh)"
-fi
-
 # ---- Run main shell setup ---- #
 shell_main() {
     source "${XDG_CONFIG_HOME}/shell/zim.zsh"
     source "${XDG_CONFIG_HOME}/shell/all.sh"
+
+    # Init tools AFTER zim completion module loads
+    if [[ "$CLAUDECODE" != "1" ]]; then
+        eval "$(zoxide init zsh)"
+        eval "$(atuin init zsh)"
+    fi
 }
 
-if [[ -x "$(command -v gdate)" ]]; then
-    sh_start_time=$(gdate +%s%3N)
-    shell_main
-    sh_end_time=$(gdate +%s%3N)
-    echo "Start time: $((sh_end_time - sh_start_time))ms" >&2
-else
-    shell_main
-fi
+shell_main
 
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# ---- End profiling ---- #
+[[ "$ZSH_PROFILE" == "1" ]] && zprof

@@ -115,20 +115,28 @@ completions_home="${XDG_DATA_HOME}/completions"
 register_click_completion() {
     if [[ -x "$(command -v python)" ]]; then
         completion_file="${completions_home}/${1}-complete.zsh"
-        # Only re-generate completions outside of TMUX
-        if [[ ! -f $completion_file || -z $TMUX ]]; then
+        # Generate completions only if cache doesn't exist
+        if [[ ! -f $completion_file ]]; then
             click_variable=$(echo ${1} | tr '[:lower:]' '[:upper:]' | tr '-' '_')
             eval "_${click_variable}_COMPLETE=zsh_source ${1} >| ${completion_file} 2>/dev/null"
         fi
-        source "${completion_file}"
+        [[ -f $completion_file ]] && source "${completion_file}"
     fi
 }
 
-# Add click scripts
+# Click completions
 register_click_completion "gd"
 register_click_completion "git-remote"
-register_click_completion "llm"
-register_click_completion "pr"
+
+# Update all git repos in a directory
+git-pull-all() {
+    local dir="${1:-.}"
+    find "$dir" -name ".git" -type d 2>/dev/null | while read gitdir; do
+        repo=$(dirname "$gitdir")
+        echo "Updating $repo..."
+        git -C "$repo" pull --ff-only 2>/dev/null || echo "  ⚠ failed or conflicts"
+    done
+}
 
 # ---- Editor with Aliases ---- #
 

@@ -13,6 +13,11 @@ if [[ -n "$TMUX" ]]; then
     return
 fi
 
+# ---- Skip if not a real terminal (no TTY) ---- #
+if [[ ! -t 0 ]] || [[ ! -t 1 ]]; then
+    return
+fi
+
 # Auto-launch sesh session picker with sesh
 if [[ -x "$(command -v sesh)" ]]; then
     # Show session picker on terminal start

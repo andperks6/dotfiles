@@ -1,0 +1,28 @@
+{
+  "model": "opus",
+  "permissions": {
+    "allow": [
+      "Bash(brew *)",
+      "Bash(git status)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(yadm *)",
+      "Bash(mise *)",
+      "Bash(npm run *)",
+      "Bash(uv *)",
+      "Read(~/.config/**)",
+      "Read(~/.zshrc)"
+    ],
+    "deny": [
+      "Read(.env)",
+      "Read(.env.*)",
+      "Read(**/secrets/**)",
+      "Read(**/*.pem)",
+      "Read(**/*credential*)"
+    ]
+  },
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  }
+}

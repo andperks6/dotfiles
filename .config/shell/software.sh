@@ -56,6 +56,7 @@ export AWS_CONFIG_FILE="${XDG_CONFIG_HOME}/aws/config"
 
 # Claude Code
 export CLAUDE_CONFIG_DIR="${XDG_CONFIG_HOME}/claude"
+export CLAUDE_CODE_SHELL="zsh"
 
 # GPG
 export GNUPGHOME="${XDG_DATA_HOME}/gnupg"

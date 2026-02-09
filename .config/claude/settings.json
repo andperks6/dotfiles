@@ -1,8 +1,12 @@
 {
-  "model": "opus",
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
   "permissions": {
     "allow": [
       "Bash(brew *)",
+      "Bash(grep *)",
       "Bash(git status)",
       "Bash(git diff*)",
       "Bash(git log*)",
@@ -20,9 +24,5 @@
       "Read(**/*.pem)",
       "Read(**/*credential*)"
     ]
-  },
-  "attribution": {
-    "commit": "",
-    "pr": ""
   }
 }

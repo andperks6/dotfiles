@@ -9,6 +9,9 @@ export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"   # State data that 
 export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}" # State data but is not important or portable enough
 export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-${TMPDIR:-/tmp}}"  # Non-essential runtime files and other file objects
 
+# ---- Auto-launch sesh/tmux (must run before p10k instant prompt) ---- #
+# This requires console input (fzf), so it must be above instant prompt
+[[ -z $TMUX ]] && source "${XDG_CONFIG_HOME}/shell/tmux.sh"
 
 # if [[ -z "$VSCODE_CWD" ]]; then
 #     # Commands to start tmux or attach to a session

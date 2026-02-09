@@ -37,14 +37,14 @@ brew "yadm"
 
 cask "claude-code"
 
-# brew "awscli"
+brew "aws-vault"
+brew "awscli"
 # brew "curl"
 # brew "neovim"
 # brew "zsh-autosuggestions"
 # brew "zsh-syntax-highlighting"
 
-cask "flutter"
-cask "docker-desktop"
+cask "orbstack"
 brew "k9s"
 
 # Terminals
@@ -73,7 +73,6 @@ brew "xz"
 # brew "neovim"
 # brew "vim"
 cask "cursor"
-cask "intellij-idea-ce"
 cask "visual-studio-code"
 
 # Productivity Apps

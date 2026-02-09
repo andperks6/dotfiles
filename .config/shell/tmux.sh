@@ -21,7 +21,8 @@ fi
 # Auto-launch sesh session picker with sesh
 if [[ -x "$(command -v sesh)" ]]; then
     # Show session picker on terminal start
-    selected=$(sesh list -t -c | fzf --height 40% --reverse --border-label ' sesh ' --border --prompt '⚡  ')
+    # -t: tmux sessions, -z: zoxide directories, -c: config sessions
+    selected=$(sesh list -t -z -c | fzf --height 40% --reverse --border-label ' sesh ' --border --prompt '⚡  ')
 
     # Only connect if user selected something (not cancelled with Esc)
     if [[ -n "$selected" ]]; then

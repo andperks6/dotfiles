@@ -35,15 +35,10 @@
     "supabase@claude-plugins-official": true,
     "slack@claude-plugins-official": true,
     "pyright-lsp@claude-plugins-official": true,
-    "superpowers@superpowers-dev": true
+    "superpowers@claude-plugins-official": true,
+    "obsidian@obsidian-skills": true
   },
   "extraKnownMarketplaces": {
-    "superpowers-dev": {
-      "source": {
-        "source": "github",
-        "repo": "obra/superpowers"
-      }
-    },
     "dev-browser-marketplace": {
       "source": {
         "source": "github",

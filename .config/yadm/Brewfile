@@ -16,6 +16,8 @@ brew "just"
 brew "lazygit"
 brew "libsodium"
 brew "neofetch"
+brew "ffmpeg"
+brew "imagemagick"
 brew "pandoc"
 brew "ripgrep"
 # brew "starship"  # using powerlevel10k instead

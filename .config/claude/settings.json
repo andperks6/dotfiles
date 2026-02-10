@@ -35,7 +35,10 @@
     "supabase@claude-plugins-official": true,
 "pyright-lsp@claude-plugins-official": true,
     "superpowers@claude-plugins-official": true,
-    "obsidian@obsidian-skills": true
+    "obsidian@obsidian-skills": true,
+    "devops-tools@claudekit-skills": true,
+    "media-tools@claudekit-skills": true,
+    "document-processing@claudekit-skills": true
   },
   "extraKnownMarketplaces": {
     "dev-browser-marketplace": {

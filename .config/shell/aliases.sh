@@ -32,7 +32,9 @@ alias yd="yadm diff"
 
 # bat --plain for unformatted cat
 alias catp='bat -P'
-# replace cat with bat
-alias cat='bat'
-# zoxide for smart cd
-alias cd='z'
+
+# Aliases that break in Claude Code sessions (no z function, bat output issues)
+if [[ -z "$CLAUDE_CODE_SHELL" ]]; then
+  alias cat='bat'
+  alias cd='z'
+fi

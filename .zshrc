@@ -82,3 +82,4 @@ shell_main
 
 # ---- End profiling ---- #
 [[ "$ZSH_PROFILE" == "1" ]] && zprof
+if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi

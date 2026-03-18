@@ -1,4 +1,1 @@
-# lazy.nvim lock file
 lazy-lock.json
-# machine specific untracked
-custom.lua

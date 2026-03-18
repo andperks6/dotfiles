@@ -46,6 +46,19 @@
       "Read(**/*credential*)"
     ]
   },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|Read|Edit|Write|Glob|Grep",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.config/claude/hooks/xdg-path-enforcer.sh"
+          }
+        ]
+      }
+    ]
+  },
   "enabledPlugins": {
     "commit-commands@claude-plugins-official": true,
     "claude-md-management@claude-plugins-official": true,
@@ -54,12 +67,14 @@
     "pr-review-toolkit@claude-plugins-official": true,
     "linear@claude-plugins-official": true,
     "supabase@claude-plugins-official": true,
-"pyright-lsp@claude-plugins-official": true,
+    "pyright-lsp@claude-plugins-official": true,
     "superpowers@claude-plugins-official": true,
     "obsidian@obsidian-skills": true,
     "devops-tools@claudekit-skills": true,
     "media-tools@claudekit-skills": true,
-    "document-processing@claudekit-skills": true
+    "document-processing@claudekit-skills": true,
+    "sentry@claude-plugins-official": true,
+    "worktrunk@worktrunk": true
   },
   "extraKnownMarketplaces": {
     "dev-browser-marketplace": {
@@ -74,16 +89,16 @@
         "repo": "mrgoonie/claudekit-skills"
       }
     },
-    "sentry-plugin-marketplace": {
-      "source": {
-        "source": "github",
-        "repo": "getsentry/sentry-for-claude"
-      }
-    },
     "obsidian-skills": {
       "source": {
         "source": "github",
         "repo": "kepano/obsidian-skills"
+      }
+    },
+    "worktrunk": {
+      "source": {
+        "source": "github",
+        "repo": "max-sixty/worktrunk"
       }
     }
   }

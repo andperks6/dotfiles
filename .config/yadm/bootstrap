@@ -6,8 +6,6 @@ bootstrap_deps() {
     if [[ -x "$(command -v brew)" ]]; then
         brew bundle --file "${bootstrap_dir}/Brewfile"
         brew pin tmux
-        brew update
-        brew upgrade
     fi
 
     # Install Chrome for Testing (required by agent-browser)
@@ -22,7 +20,6 @@ bootstrap_deps() {
             source "${bootstrap_dir}/fonts.sh"
         fi
         sudo apt --yes update
-        sudo apt --yes upgrade
     fi
 }
 
@@ -69,15 +66,6 @@ bootstrap_libraries() {
     bootstrap_node() {
         npm install -g npm
         corepack enable
-        npm install -g neovim
-    }
-
-    bootstrap_neovim() {
-        # Install AstroNvim if nvim config doesn't exist
-        if [[ ! -d ~/.config/nvim ]]; then
-            echo "Installing AstroNvim..."
-            git clone --depth 1 https://github.com/AstroNvim/AstroNvim ~/.config/nvim
-        fi
     }
 
     bootstrap_tmux() {
@@ -97,7 +85,6 @@ bootstrap_libraries() {
     bootstrap_python
     bootstrap_rust
     bootstrap_node
-    bootstrap_neovim
     bootstrap_tmux
 }
 

@@ -57,6 +57,7 @@ export AWS_CONFIG_FILE="${XDG_CONFIG_HOME}/aws/config"
 # Claude Code
 export CLAUDE_CONFIG_DIR="${XDG_CONFIG_HOME}/claude"
 export CLAUDE_CODE_SHELL="zsh"
+export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
 
 # GPG
 export GNUPGHOME="${XDG_DATA_HOME}/gnupg"
@@ -86,6 +87,9 @@ export PASSWORD_STORE_ENABLE_EXTENSIONS=true
 # [[ -x "$(command -v fzf)" ]] && eval $(fzf --zsh)
 
 # ---- PATH ---- #
+
+# PostgreSQL client tools (libpq is keg-only)
+[[ -d "${HOMEBREW_PREFIX}/opt/libpq/bin" ]] && export PATH="${HOMEBREW_PREFIX}/opt/libpq/bin:$PATH"
 
 # Add shell config bin folder
 export PATH="${XDG_CONFIG_HOME}/shell/bin:$PATH"

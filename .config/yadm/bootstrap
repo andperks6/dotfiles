@@ -10,6 +10,11 @@ bootstrap_deps() {
         brew upgrade
     fi
 
+    # Install Chrome for Testing (required by agent-browser)
+    if [[ -x "$(command -v agent-browser)" ]]; then
+        agent-browser install
+    fi
+
     if [[ "$(uname -s)" == "Linux" && "$(uname -o)" != "Android" ]]; then
         wsl_sys32_path="/mnt/c/Windows/System32"
         if [[ ! -d $wsl_sys32_path ]]; then

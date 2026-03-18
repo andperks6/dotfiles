@@ -31,6 +31,8 @@ brew "zoxide"
 
 # Programming Related
 brew "bitwarden-cli"
+brew "worktrunk"
+brew "agent-browser"
 brew "gh"
 brew "helix"
 brew "mise"
@@ -40,6 +42,7 @@ brew "yadm"
 
 cask "claude-code"
 
+brew "libpq"
 brew "aws-vault"
 brew "awscli"
 # brew "curl"
@@ -52,6 +55,7 @@ brew "k9s"
 
 # Terminals
 cask "alacritty"
+cask "ghostty"
 cask "wezterm"
 cask "warp"
 
@@ -73,7 +77,10 @@ brew "pkg-config"
 brew "xz"
 
 # Code / Text Editors
-# brew "neovim"
+brew "neovim"
+brew "ghostscript"
+brew "tectonic"
+brew "ast-grep"
 # brew "vim"
 cask "cursor"
 cask "visual-studio-code"

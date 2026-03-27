@@ -1,0 +1,15 @@
+# Exclude Claude Code data/cache dirs from ripgrep (e.g. nvim file pickers)
+# Config files like settings.json, hooks/, skills/, agents/, projects/ remain visible
+/plugins/
+/file-history/
+/debug/
+/usage-data/
+/todos/
+/tasks/
+/paste-cache/
+/shell-snapshots/
+/telemetry/
+/statsig/
+/sessions/
+/cache/
+/backups/

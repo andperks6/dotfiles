@@ -40,7 +40,7 @@ brew "ollama"
 brew "sesh"
 brew "yadm"
 
-cask "claude-code"
+cask "claude-code@latest"
 
 brew "libpq"
 brew "aws-vault"

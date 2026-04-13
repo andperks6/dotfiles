@@ -18,6 +18,19 @@ alias gu="git branch -u main"
 alias gr="git rebase -i"
 alias gundo="git restore ."
 
+# Claude Code profiles — auto-switches based on working directory.
+# Work repos live under ~/dev/work/, everything else is personal.
+claude() {
+  local profile
+  case "$PWD/" in
+    "$HOME"/dev/work/*) profile=work ;;
+    *)                  profile=personal ;;
+  esac
+  CLAUDE_CONFIG_DIR="$HOME/.config/claude-$profile" command claude "$@"
+}
+alias claude-work='CLAUDE_CONFIG_DIR=~/.config/claude-work command claude'
+alias claude-personal='CLAUDE_CONFIG_DIR=~/.config/claude-personal command claude'
+
 # Yadm
 alias yb="bash ~/.config/yadm/bootstrap"
 alias ys="yadm status"

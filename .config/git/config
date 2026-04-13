@@ -1,6 +1,8 @@
 [user]
 	name = Andrew Perkins
-	email = aperkins@blackthornsoftware.com
+	email = andperks6@gmail.com
+[includeIf "gitdir:~/dev/work/"]
+	path = ~/.config/git/config-work
 [core]
     autocrlf = input
     commentChar = ";"

@@ -45,35 +45,18 @@ install_deps() {
 }
 
 install_shells() {
-    shell_type=$(basename "$SHELL")
-    if [[ "${shell_type}" == "fish" ]]; then
-        echo "  Already using fish"
-        exit 0
-    elif [[ "${shell_type}" == "bash" ]]; then
-        if [[ "${system_type}" == "Linux" ]]; then
-            echo "  Installing"
-            sudo apt --yes install zsh
-        else
-            # macos defaults to zsh
-            echo "  Error: unhandled system type"
-            exit 1
-        fi
-    fi
     if [[ "${system_type}" == "Linux" ]]; then
-        echo "  Installing fish"
+        sudo apt --yes install zsh
         sudo apt-add-repository ppa:fish-shell/release-3
         sudo apt-get install fish
     elif [[ "${system_type}" == "Darwin" ]]; then
         brew install fish
+        # zsh is pre-installed on macOS
     fi
-    echo "Changing shell to fish"
-    # echo "/usr/local/bin/fish" | sudo tee -a /etc/shells #may not be needed
-    chsh -s $(which fish)
-}
-
-setup_zsh() {
-    echo "Installing zimfw"
-    curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
+    echo ""
+    echo "To set your default shell:"
+    echo "  chsh -s \$(which zsh)"
+    echo "  chsh -s \$(which fish)"
 }
 
 evaluate_homebrew() {
@@ -146,20 +129,6 @@ install_yadm() {
     fi
 }
 
-chezmoi_() {
-    # https://formulae.brew.sh/formula/chezmoi
-    brew_install "chezmoi"
-
-    echo "Cloning dotfiles repo"
-    c_dir="$HOME/.local/share/chezmoi"
-    if [[ -d $c_dir ]]; then
-        echo "  Already applied"
-    else
-        chezmoi init --apply andperks6
-        echo "  Done"
-    fi
-}
-
 cleanup_script() {
     echo "Deleting setup.sh"
     rm -rf "setup.sh"
@@ -176,9 +145,6 @@ case ${1} in
   "shell")
     install_shells
     ;;
-  "zsh")
-    setup_zsh
-    ;;
   "auth")
     setup_auth
     ;;
@@ -190,7 +156,7 @@ case ${1} in
     ;;
   *)
     echo "Unknown command: ${1}"
-    echo "Commands: deps, brew, shell, zsh, auth, yadm, clean"
+    echo "Commands: deps, brew, shell, auth, yadm, clean"
     exit 1
     ;;
 esac

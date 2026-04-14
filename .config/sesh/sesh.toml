@@ -1,0 +1,35 @@
+# Sesh configuration
+# https://github.com/joshmedeski/sesh
+
+# Default session name when creating new sessions
+default_session_name = "main"
+
+# Startup script to run when a new session is created
+# startup_script = "~/.config/sesh/startup.sh"
+
+# Session name when using the current working directory
+# session_name_pwd_length = 0  # 0 means use full basename
+
+# Paths to search for sessions (in addition to zoxide)
+# session_search_paths = ["~/dev", "~/code"]
+
+# Directories to exclude from session discovery
+# blacklist = [".git", "node_modules", ".cache"]
+
+# ---- Configured Sessions ----
+# These always appear in sesh list with -c flag
+
+[[session]]
+name = "dotfiles"
+path = "~/.config"
+# startup_command = "nvim ."
+
+[[session]]
+name = "home"
+path = "~"
+
+# Add more configured sessions as needed:
+# [[session]]
+# name = "work"
+# path = "~/code/work"
+# startup_command = "nvim ."

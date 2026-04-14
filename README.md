@@ -25,14 +25,13 @@ curl -fsSL https://raw.githubusercontent.com/andperks6/dotfiles/main/setup.sh -o
 | ------------------ | --------------------------------------------------------------------------- |
 | `./setup.sh deps`  | Installs system dependencies (Linux only — no-op on macOS)                  |
 | `./setup.sh brew`  | Installs Homebrew                                                           |
-| `./setup.sh zsh`   | Installs zim (zsh framework)                                                |
+| `./setup.sh shell` | Installs fish and zsh (macOS has zsh pre-installed)                         |
 | `./setup.sh auth`  | Installs `gh` and runs `gh auth login` (generates SSH key + uploads to GH)  |
 | `./setup.sh yadm`  | Installs yadm, clones the dotfiles repo, and runs bootstrap                 |
 | `./setup.sh clean` | Deletes the setup script                                                    |
 
-The `auth` step must run before `yadm` — yadm clones via SSH and needs GitHub access first.
+`auth` must run before `yadm` — yadm clones via SSH and needs GitHub access first.
 
-`./setup.sh shell` also exists but is deprecated (installed fish as default; now on zsh).
 
 ## What yadm bootstrap does
 After cloning, `yadm bootstrap` runs automatically:

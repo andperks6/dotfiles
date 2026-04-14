@@ -90,7 +90,6 @@ bootstrap_libraries() {
 
 bootstrap_crypt() {
     yadm decrypt
-    source "${bootstrap_dir}/setup_git.sh"
 }
 
 # Run all bootstrap steps

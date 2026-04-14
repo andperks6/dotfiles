@@ -117,11 +117,18 @@ brew_install() {
     fi
 }
 
-setup_devbox() {
-    if [[ -z $(command -v devbox) ]]; then
-        curl -fsSL https://get.jetify.com/devbox | bash
+setup_auth() {
+    # Install gh early so it can generate an SSH key and upload it to GitHub.
+    # Required before `yadm clone` (which uses git@github.com:).
+    brew_install "gh"
+
+    if gh auth status >/dev/null 2>&1; then
+        echo "  Already authenticated with gh"
+    else
+        echo "Running: gh auth login"
+        echo "  Select: GitHub.com > SSH > Generate a new SSH key > authenticate via browser"
+        gh auth login
     fi
-    devbox global pull https://raw.githubusercontent.com/andperks6/dotfiles/main/.config/devbox/devbox.json
 }
 
 install_yadm() {
@@ -168,13 +175,13 @@ case ${1} in
     ;;
   "shell")
     install_shells
-    ;; 
+    ;;
   "zsh")
     setup_zsh
-    ;; 
-  "devbox")
-    setup_devbox
-    ;; 
+    ;;
+  "auth")
+    setup_auth
+    ;;
   "yadm")
     install_yadm
     ;;
@@ -183,7 +190,7 @@ case ${1} in
     ;;
   *)
     echo "Unknown command: ${1}"
-    echo "Commands: deps, brew, shell, zsh, yadm, clean"
+    echo "Commands: deps, brew, shell, zsh, auth, yadm, clean"
     exit 1
     ;;
 esac

@@ -92,11 +92,34 @@ bootstrap_crypt() {
     yadm decrypt
 }
 
+bootstrap_claude_profiles() {
+    # Set up work/personal Claude Code profiles. Each profile dir symlinks
+    # shared config back to ~/.config/claude but keeps its own auth, sessions,
+    # history, and project state. To diverge a file, replace the symlink:
+    #   rm ~/.config/claude-work/settings.json
+    #   cp ~/.config/claude/settings.json ~/.config/claude-work/settings.json
+    local claude_dir="${HOME}/.config/claude"
+    local shared_items=(settings.json plugins skills hooks .rgignore)
+
+    for profile in work personal; do
+        local profile_dir="${HOME}/.config/claude-${profile}"
+        mkdir -p "$profile_dir"
+        for item in "${shared_items[@]}"; do
+            if [[ -e "${claude_dir}/${item}" ]] && [[ ! -e "${profile_dir}/${item}" ]]; then
+                ln -s "../claude/${item}" "${profile_dir}/${item}"
+            fi
+        done
+    done
+    echo "Claude profiles ready: ~/.config/claude-work, ~/.config/claude-personal"
+    echo "  Log in per profile: 'claude-work' then /login, 'claude-personal' then /login"
+}
+
 # Run all bootstrap steps
 bootstrap_deps
 bootstrap_mise_tools
 bootstrap_libraries
 bootstrap_crypt
+bootstrap_claude_profiles
 
 echo ""
 echo "Bootstrap complete!"

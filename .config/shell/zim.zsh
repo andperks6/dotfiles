@@ -50,7 +50,8 @@ zstyle ':zim:zmodule' use 'degit'
 
 # Set a custom path for the completion dump file.
 # If none is provided, the default ${ZDOTDIR:-${HOME}}/.zcompdump is used.
-#zstyle ':zim:completion' dumpfile "${ZDOTDIR:-${HOME}}/.zcompdump-${ZSH_VERSION}"
+[[ ! -d ${XDG_CACHE_HOME}/zsh ]] && mkdir -p ${XDG_CACHE_HOME}/zsh
+zstyle ':zim:completion' dumpfile "${XDG_CACHE_HOME}/zsh/zcompdump"
 
 #
 # git

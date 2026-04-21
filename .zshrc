@@ -13,30 +13,6 @@ export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-${TMPDIR:-/tmp}}"  # Non-essential ru
 # This requires console input (fzf), so it must be above instant prompt
 [[ -z $TMUX ]] && source "${XDG_CONFIG_HOME}/shell/tmux.sh"
 
-# if [[ -z "$VSCODE_CWD" ]]; then
-#     # Commands to start tmux or attach to a session
-#     # For example: tmux new-session -A -s my_session
-#     if [ -z "$TMUX" ]; then
-#         # tmux with p10k https://github.com/romkatv/powerlevel10k/issues/1203#issuecomment-754805535
-#         exec tmux new-session -A -s workspace
-#     fi
-# fi
-
-
-
-# tmux_run() {
-#   parent_process=$(ps -p $PPID -o comm=)
-#     # don't start in vscode
-#     if [[ "$parent_process" != "code" ]]; then
-#         if [ -z "$TMUX" ]; then
-#             # tmux with p10k https://github.com/romkatv/powerlevel10k/issues/1203#issuecomment-754805535
-#             exec tmux new-session -A -s workspace
-#         fi
-#     fi
-# }
-
-# tmux_run
-
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -45,10 +21,6 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 (( ${+commands[direnv]} )) && emulate zsh -c "$(direnv hook zsh)"
-
-# ---- What gets displayed on line running command ---- #
-PS1='%n@%m %~$ '
-
 
 # ---- History configuration ---- #
 zsh_state_home="${XDG_STATE_HOME}/zsh"

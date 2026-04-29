@@ -1,0 +1,10 @@
+{
+  "name": "chrome-devtools",
+  "description": "",
+  "source": "mrgoonie/claudekit-skills",
+  "sourceType": "github",
+  "subpath": "chrome-devtools",
+  "installedAt": "2026-04-17T21:26:03.511Z",
+  "enabled": true,
+  "checksum": "893563ea6ee597b2"
+}

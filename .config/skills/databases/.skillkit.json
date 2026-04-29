@@ -1,0 +1,10 @@
+{
+  "name": "databases",
+  "description": "",
+  "source": "mrgoonie/claudekit-skills",
+  "sourceType": "github",
+  "subpath": "databases",
+  "installedAt": "2026-04-17T21:26:03.517Z",
+  "enabled": true,
+  "checksum": "0567d1899bd7fa75"
+}

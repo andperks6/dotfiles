@@ -58,6 +58,12 @@ bootstrap_libraries() {
         uv pip install --system -r ~/.config/lang/python/requirements.txt
     }
 
+    bootstrap_python_tools() {
+        # CLI tools installed into isolated venvs under ~/.local/share/uv/tools
+        # with shims in ~/.local/bin (added to PATH in shell/software.sh).
+        uv tool install mlx-lm
+    }
+
     bootstrap_rust() {
         cargo install aoc-cli
         mise reshim
@@ -83,35 +89,92 @@ bootstrap_libraries() {
     }
 
     bootstrap_python
+    bootstrap_python_tools
     bootstrap_rust
     bootstrap_node
     bootstrap_tmux
 }
 
 bootstrap_crypt() {
-    yadm decrypt
+    local archive="${HOME}/.local/share/yadm/archive"
+    if [[ -f "$archive" ]]; then
+        yadm decrypt
+    else
+        echo "Skipping yadm decrypt: no archive found at $archive"
+    fi
 }
 
 bootstrap_claude_profiles() {
-    # Set up work/personal Claude Code profiles. Each profile dir symlinks
-    # shared config back to ~/.config/claude but keeps its own auth, sessions,
-    # history, and project state. To diverge a file, replace the symlink:
-    #   rm ~/.config/claude-work/settings.json
-    #   cp ~/.config/claude/settings.json ~/.config/claude-work/settings.json
-    local claude_dir="${HOME}/.config/claude"
-    local shared_items=(settings.json plugins skills hooks .rgignore)
+    # Set up work/personal Claude Code profiles under ~/.claude/. Each profile
+    # dir symlinks shared config (settings, skills, hooks) back to ~/.claude/
+    # but keeps its own auth, sessions, history, and project state.
+    # To diverge a file, replace the symlink:
+    #   rm ~/.claude/work/settings.json
+    #   cp ~/.claude/settings.json ~/.claude/work/settings.json
+    local claude_dir="${HOME}/.claude"
+    local shared_items=(settings.json skills hooks .rgignore)
 
+    mkdir -p "$claude_dir"
     for profile in work personal; do
-        local profile_dir="${HOME}/.config/claude-${profile}"
+        local profile_dir="${claude_dir}/${profile}"
         mkdir -p "$profile_dir"
         for item in "${shared_items[@]}"; do
             if [[ -e "${claude_dir}/${item}" ]] && [[ ! -e "${profile_dir}/${item}" ]]; then
-                ln -s "../claude/${item}" "${profile_dir}/${item}"
+                ln -s "../${item}" "${profile_dir}/${item}"
             fi
         done
     done
-    echo "Claude profiles ready: ~/.config/claude-work, ~/.config/claude-personal"
+    echo "Claude profiles ready: ~/.claude/work, ~/.claude/personal"
     echo "  Log in per profile: 'claude-work' then /login, 'claude-personal' then /login"
+}
+
+bootstrap_local_skills() {
+    # Source-of-truth for agent-neutral skills tracked in dotfiles. Each entry
+    # in ~/.config/skills/<name>/ is exposed to every installed agent via
+    # symlink. Used for skills that skillkit cannot install unattended (e.g.
+    # repos that fail its security scan or have a non-discoverable layout).
+    local source_dir="${HOME}/.config/skills"
+    if [[ ! -d "$source_dir" ]]; then
+        echo "Skipping local skills: no ~/.config/skills directory"
+        return
+    fi
+    local agent_dirs=(
+        "${HOME}/.claude/skills"
+        "${HOME}/.codex/skills"
+        "${HOME}/.opencode/skills"
+    )
+    for skill_path in "${source_dir}"/*; do
+        [[ -d "$skill_path" ]] || continue
+        local name
+        name=$(basename "$skill_path")
+        for agent_skills in "${agent_dirs[@]}"; do
+            [[ -d "$(dirname "$agent_skills")" ]] || continue
+            mkdir -p "$agent_skills"
+            local link="${agent_skills}/${name}"
+            if [[ -L "$link" ]]; then
+                # Refresh the symlink target if it drifted.
+                [[ "$(readlink "$link")" == "$skill_path" ]] || ln -snf "$skill_path" "$link"
+            elif [[ ! -e "$link" ]]; then
+                ln -s "$skill_path" "$link"
+            fi
+        done
+    done
+    echo "Local skills linked from ~/.config/skills/"
+}
+
+bootstrap_skillkit() {
+    # Restore community skills from the ~/.skills manifest.
+    # Custom skills in ~/.config/skills/ are handled by bootstrap_local_skills.
+    if [[ ! -f "${HOME}/.skills" ]]; then
+        echo "Skipping skillkit: no ~/.skills manifest found"
+        return
+    fi
+    if ! command -v npx >/dev/null 2>&1; then
+        echo "Skipping skillkit: npx not installed"
+        return
+    fi
+    echo "Installing community skills from ~/.skills manifest..."
+    npx -y skillkit@latest manifest install --yes
 }
 
 # Run all bootstrap steps
@@ -120,6 +183,8 @@ bootstrap_mise_tools
 bootstrap_libraries
 bootstrap_crypt
 bootstrap_claude_profiles
+bootstrap_local_skills
+bootstrap_skillkit
 
 echo ""
 echo "Bootstrap complete!"

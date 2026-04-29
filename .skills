@@ -5,13 +5,6 @@ skills:
       - Release
       - linear-cli
     enabled: true
-  - source: mrgoonie/claudekit-skills
-    skills:
-      - chrome-devtools
-      - databases
-      - devops
-      - media-processing
-    enabled: true
   - source: kepano/obsidian-skills
     skills:
       - defuddle

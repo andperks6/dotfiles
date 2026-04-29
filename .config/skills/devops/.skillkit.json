@@ -1,0 +1,10 @@
+{
+  "name": "devops",
+  "description": "",
+  "source": "mrgoonie/claudekit-skills",
+  "sourceType": "github",
+  "subpath": "devops",
+  "installedAt": "2026-04-17T21:26:03.522Z",
+  "enabled": true,
+  "checksum": "2456b40d4a02aedd"
+}

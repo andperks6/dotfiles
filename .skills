@@ -1,0 +1,48 @@
+version: 1
+skills:
+  - source: schpet/linear-cli
+    skills:
+      - Release
+      - linear-cli
+    enabled: true
+  - source: mrgoonie/claudekit-skills
+    skills:
+      - chrome-devtools
+      - databases
+      - devops
+      - media-processing
+    enabled: true
+  - source: kepano/obsidian-skills
+    skills:
+      - defuddle
+      - json-canvas
+      - obsidian-bases
+      - obsidian-cli
+      - obsidian-markdown
+    enabled: true
+  - source: anthropics/skills
+    skills:
+      - docx
+      - pdf
+      - pptx
+      - xlsx
+    enabled: true
+  - source: rohitg00/skillkit
+    skills:
+      - find-skills
+    enabled: true
+  - source: mapbox/mapbox-agent-skills
+    skills:
+      - mapbox-geospatial-operations
+    enabled: true
+  - source: andperks6/zig-skills
+    skills:
+      - zig
+      - zig-io
+      - zig-build
+      - zig-modules-packaging
+      - zig-patterns
+      - zig-tigerstyle
+      - zig-benchmarking
+    enabled: true
+updatedAt: 2026-04-29T00:00:00.000Z

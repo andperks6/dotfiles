@@ -1,0 +1,11 @@
+# Ghostty configuration (XDG path, tracked in dotfiles).
+# Loaded from $XDG_CONFIG_HOME/ghostty/config.ghostty before any
+# macOS Application Support config. See https://ghostty.org/docs/config
+
+# System-adaptive theme: follows macOS light/dark appearance.
+theme = dark:Synthwave, light:Modus Operandi
+
+# Always restore windows, tab order, and per-tab working directories on
+# relaunch. Each restored tab re-runs the login shell, and shell/tmux.sh
+# reattaches it to the detached tmux session matching its directory.
+window-save-state = always

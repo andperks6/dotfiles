@@ -1,0 +1,28 @@
+# Fisher (plugin manager) re-installs everything in fish_plugins on first run,
+# so we don't track the plugins themselves — only the manifest and our own files.
+fisher.fish
+fish_history
+fish_variables
+
+# autopair plugin
+conf.d/autopair.fish
+functions/_autopair_*.fish
+
+# fzf.fish plugin
+conf.d/fzf.fish
+functions/_fzf_*.fish
+functions/fzf_configure_bindings.fish
+
+# sponge plugin
+conf.d/sponge.fish
+functions/_sponge_*.fish
+functions/sponge_filter_*.fish
+
+# tide prompt
+conf.d/_tide_init.fish
+functions/_tide_*.fish
+functions/tide
+functions/tide.fish
+functions/fish_prompt.fish
+functions/fish_mode_prompt.fish
+completions/tide.fish

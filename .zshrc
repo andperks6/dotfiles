@@ -1,6 +1,10 @@
 # ---- Profiling (run: ZSH_PROFILE=1 zsh) ---- #
 [[ "$ZSH_PROFILE" == "1" ]] && zmodload zsh/zprof
 
+# ---- Prompt engine (p10k | starship) ---- #
+# Try starship with: export PROMPT_ENGINE=starship (then restart shell).
+: ${PROMPT_ENGINE:=p10k}
+
 # ---- XDG Base Directory ---- #
 # https://wiki.archlinux.org/title/XDG_Base_Directory
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"    # Configurations
@@ -17,7 +21,7 @@ export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-${TMPDIR:-/tmp}}"  # Non-essential ru
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
 (( ${+commands[direnv]} )) && emulate zsh -c "$(direnv export zsh)"
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+if [[ "$PROMPT_ENGINE" == p10k && -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 (( ${+commands[direnv]} )) && emulate zsh -c "$(direnv hook zsh)"
@@ -34,6 +38,15 @@ setopt append_history
 setopt inc_append_history
 setopt share_history
 
+# ---- Completion search paths (must be set before Zim runs compinit) ---- #
+if [[ -n $HOMEBREW_PREFIX ]]; then
+    FPATH="$HOMEBREW_PREFIX/share/zsh/site-functions:${FPATH}"
+elif [[ -d /opt/homebrew/share/zsh/site-functions ]]; then
+    FPATH="/opt/homebrew/share/zsh/site-functions:${FPATH}"
+elif [[ -d /home/linuxbrew/.linuxbrew/share/zsh/site-functions ]]; then
+    FPATH="/home/linuxbrew/.linuxbrew/share/zsh/site-functions:${FPATH}"
+fi
+
 # ---- Run main shell setup ---- #
 shell_main() {
     source "${XDG_CONFIG_HOME}/shell/zim.zsh"
@@ -49,9 +62,22 @@ shell_main() {
 shell_main
 
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+# ---- Activate prompt ---- #
+# p10k is sourced directly (not via zim) so this toggle needs no zim rebuild.
+# starship init uses `mise exec` because `mise activate` only adds tools to
+# PATH on the first precmd, which is after this file finishes sourcing.
+if [[ "$PROMPT_ENGINE" == p10k ]]; then
+  p10k_theme=~/.zim/modules/powerlevel10k/powerlevel10k.zsh-theme
+  [[ -r $p10k_theme ]] && source $p10k_theme
+  # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+  [[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
+else
+  eval "$(mise exec -- starship init zsh 2>/dev/null)"
+fi
 
 # ---- End profiling ---- #
 [[ "$ZSH_PROFILE" == "1" ]] && zprof
 if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
+
+# bun completions
+[ -s "/opt/homebrew/share/zsh/site-functions/_bun" ] && source "/opt/homebrew/share/zsh/site-functions/_bun"

@@ -19,8 +19,9 @@ zmodule utility
 #
 # Exposes git repository status information to prompts.
 zmodule git-info
-# A customizable version of steeef's prompt theme.
-zmodule romkatv/powerlevel10k --use degit
+# Powerlevel10k is loaded directly from ~/.zshrc when PROMPT_ENGINE=p10k
+# (default prompt is starship), so the toggle needs no zim rebuild to switch.
+# zmodule romkatv/powerlevel10k --use degit
 
 # Additional completion definitions for Zsh.
 zmodule zsh-users/zsh-completions

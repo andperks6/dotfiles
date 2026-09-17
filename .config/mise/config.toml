@@ -29,6 +29,7 @@ terraform = "1.14"
 uv = "0.9"
 zig = "0.16"
 zls = "0.16"
+starship = "latest"
 
 [settings]
 # Automatically install tools when entering a directory with a config file

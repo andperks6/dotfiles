@@ -109,8 +109,7 @@ fi
 zsh_cache_home="${XDG_CACHE_HOME}/zsh"
 [[ ! -d $zsh_cache_home ]] && mkdir -p $zsh_cache_home
 
-# Add completion directories
-FPATH="$HOMEBREW_PREFIX/share/zsh/site-functions:${FPATH}"
+# Add completion directories that become available after Mise initializes
 [[ -x "$(command -v rustc)" ]] && FPATH="$(rustc --print sysroot)/share/zsh/site-functions:${FPATH}"
 
 # man zshcompsys

@@ -1,3 +1,6 @@
+# TODO: revisit. Not installed by yadm/bootstrap (only requirements.txt is).
+# Added 2024-08-31 in the initial commit and untouched since. Decide whether to
+# wire into bootstrap_python, fold into per-project venvs, or delete.
 accelerate
 huggingface_hub
 langchain

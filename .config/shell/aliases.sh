@@ -26,10 +26,16 @@ claude() {
     "$HOME"/dev/work/*) profile=work ;;
     *)                  profile=personal ;;
   esac
-  CLAUDE_CONFIG_DIR="$HOME/.config/claude-$profile" command claude "$@"
+  CLAUDE_CONFIG_DIR="$HOME/.claude/$profile" command claude "$@"
 }
-alias claude-work='CLAUDE_CONFIG_DIR=~/.config/claude-work command claude'
-alias claude-personal='CLAUDE_CONFIG_DIR=~/.config/claude-personal command claude'
+alias claude-work='CLAUDE_CONFIG_DIR=~/.claude/work command claude'
+alias claude-personal='CLAUDE_CONFIG_DIR=~/.claude/personal command claude'
+
+# Claude Desktop profile switching via Electron --user-data-dir.
+# Default app launch (Dock/Spotlight) = work profile (~/Library/Application Support/Claude/).
+# To log in to personal for the first time: quit the default Claude instance first
+# so the claude:// auth deep-link routes to the personal instance.
+alias claude-app-personal='open -n -a "Claude" --args --user-data-dir="$HOME/Library/Application Support/Claude-Personal"'
 
 # Yadm
 alias yb="bash ~/.config/yadm/bootstrap"
@@ -39,7 +45,7 @@ alias yp="yadm push"
 alias ypl="yadm pull"
 alias ya="yadm add -u"
 alias yc="yadm commit -m"
-alias yac="yadm add ~/docs/ ~/.config/alacritty/ ~/.config/git/ ~/.config/helix/ ~/.config/kitty/ ~/.config/lang/ ~/.config/lazygit/ ~/.config/npm/ ~/.config/nvim/ ~/.config/shell/ ~/.config/shellcheckrc ~/.config/tmux/ ~/.config/vim/ ~/.config/wezterm/ ~/.config/yadm/"
+alias yac="yadm add ~/docs/ ~/.config/alacritty/ ~/.config/git/ ~/.config/helix/ ~/.config/kitty/ ~/.config/lang/ ~/.config/lazygit/ ~/.config/npm/ ~/.config/nvim/ ~/.config/opencode/ ~/.config/shell/ ~/.config/shellcheckrc ~/.config/tmux/ ~/.config/vim/ ~/.config/wezterm/ ~/.config/yadm/ ~/.claude/settings.json ~/.claude/.rgignore ~/.claude/hooks/ ~/.skills ~/.skillkit/lock.json"
 alias yls="yadm ls-files ~"
 alias yd="yadm diff"
 

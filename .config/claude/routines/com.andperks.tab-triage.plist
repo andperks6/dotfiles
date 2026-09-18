@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.andperks.tab-triage</string>
+
+  <!-- Invoke via /bin/zsh explicitly so TCC attributes to zsh (which has FDA). -->
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/zsh</string>
+    <string>/Users/andrewperkins/.config/claude/routines/tab-triage.sh</string>
+  </array>
+
+  <!-- Sunday 17:00 weekly (before the 18:00 daily-log). Runs at next wake if asleep. -->
+  <key>StartCalendarInterval</key>
+  <dict>
+    <key>Weekday</key><integer>0</integer>
+    <key>Hour</key><integer>17</integer>
+    <key>Minute</key><integer>0</integer>
+  </dict>
+
+  <key>RunAtLoad</key>
+  <false/>
+  <key>ProcessType</key>
+  <string>Background</string>
+  <key>StandardOutPath</key>
+  <string>/tmp/com.andperks.tab-triage.out</string>
+  <key>StandardErrorPath</key>
+  <string>/tmp/com.andperks.tab-triage.err</string>
+</dict>
+</plist>

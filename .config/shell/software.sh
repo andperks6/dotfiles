@@ -54,8 +54,7 @@ fi
 # AWS
 export AWS_CONFIG_FILE="${XDG_CONFIG_HOME}/aws/config"
 
-# Claude Code
-export CLAUDE_CONFIG_DIR="${XDG_CONFIG_HOME}/claude"
+# Claude Code (profile switching in aliases.sh; no CLAUDE_CONFIG_DIR = default ~/.claude)
 export CLAUDE_CODE_SHELL="zsh"
 export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
 

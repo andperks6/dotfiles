@@ -128,6 +128,18 @@ bootstrap_claude_profiles() {
     echo "  Log in per profile: 'claude-work' then /login, 'claude-personal' then /login"
 }
 
+bootstrap_daily_log() {
+    # Install the daily Obsidian work/personal log scheduler (launchd on macOS,
+    # systemd --user timer on Linux). Idempotent. Details in
+    # ~/.config/claude/routines/ (install.sh, daily-log.sh, the plist).
+    local installer="${HOME}/.config/claude/routines/install.sh"
+    if [[ -x "$installer" ]]; then
+        "$installer" || echo "Warning: daily-log install reported an issue (continuing)"
+    else
+        echo "Skipping daily-log: no installer at $installer"
+    fi
+}
+
 bootstrap_local_skills() {
     # Source-of-truth for agent-neutral skills tracked in dotfiles. Each entry
     # in ~/.config/skills/<name>/ is exposed to every installed agent via
@@ -174,7 +186,10 @@ bootstrap_skillkit() {
         return
     fi
     echo "Installing community skills from ~/.skills manifest..."
-    npx -y skillkit@latest manifest install --yes
+    # skillkit resolves install scope from the cwd: it writes to
+    # <cwd>/.claude/skills. Running from anywhere else (e.g. ~/.config)
+    # creates a project-scoped duplicate set instead of user-scoped skills.
+    ( cd "${HOME}" && npx -y skillkit@latest manifest install --yes )
 }
 
 # Run all bootstrap steps
@@ -183,6 +198,7 @@ bootstrap_mise_tools
 bootstrap_libraries
 bootstrap_crypt
 bootstrap_claude_profiles
+bootstrap_daily_log
 bootstrap_local_skills
 bootstrap_skillkit
 

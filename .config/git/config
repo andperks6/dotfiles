@@ -6,6 +6,15 @@
 [core]
     autocrlf = input
     commentChar = ";"
-    pager = delta
+    pager = delta -s
+[interactive]
+    diffFilter = delta --color-only
 [delta]
-    side-by-side = true
+    navigate = true
+    line-numbers = true
+[merge]
+    conflictstyle = zdiff3
+[diff]
+    colorMoved = default
+[init]
+	defaultBranch = main

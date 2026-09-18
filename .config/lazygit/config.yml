@@ -4,3 +4,4 @@ gui:
 git:
   pagers:
     - pager: delta --paging=never
+      colorArg: always

@@ -28,14 +28,4 @@ skills:
     skills:
       - mapbox-geospatial-operations
     enabled: true
-  - source: andperks6/zig-skills
-    skills:
-      - zig
-      - zig-io
-      - zig-build
-      - zig-modules-packaging
-      - zig-patterns
-      - zig-tigerstyle
-      - zig-benchmarking
-    enabled: true
-updatedAt: 2026-04-29T00:00:00.000Z
+updatedAt: 2026-08-18T18:29:51.404Z

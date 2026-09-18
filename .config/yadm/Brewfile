@@ -15,6 +15,7 @@ brew "jq"
 brew "just"
 brew "lazygit"
 brew "libsodium"
+brew "libyaml"
 brew "neofetch"
 brew "ffmpeg"
 brew "imagemagick"
@@ -31,16 +32,26 @@ brew "zoxide"
 
 # Programming Related
 brew "bitwarden-cli"
+cask "bitwarden" if OS.mac?
 brew "worktrunk"
 brew "agent-browser"
 brew "gh"
 brew "helix"
 brew "mise"
 brew "ollama"
+brew "llama.cpp"
 brew "sesh"
 brew "yadm"
 
 cask "claude-code@latest"
+brew "anomalyco/tap/opencode"
+cask "codex"
+brew "schpet/tap/linear"
+
+# AI agent desktop apps (macOS only)
+cask "claude" if OS.mac?
+cask "opencode-desktop" if OS.mac?
+cask "codex-app" if OS.mac?
 
 brew "libpq"
 brew "aws-vault"
@@ -56,6 +67,7 @@ brew "k9s"
 # Terminals
 cask "alacritty"
 cask "ghostty"
+cask "manaflow-ai/cmux/cmux"
 cask "wezterm"
 cask "warp"
 

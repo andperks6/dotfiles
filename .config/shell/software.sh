@@ -97,6 +97,10 @@ export PATH="${XDG_CONFIG_HOME}/shell/bin:$PATH"
 user_bin="${HOME}/bin"
 [[ -d $user_bin ]] && export PATH="${user_bin}:$PATH"
 
+# uv tool install shims (e.g. mlx_lm.*, installed via yadm bootstrap)
+uv_tool_bin="${HOME}/.local/bin"
+[[ -d $uv_tool_bin ]] && export PATH="${uv_tool_bin}:$PATH"
+
 # Add System32 if it exists (WSL)
 sys32_path="/mnt/c/Windows/System32"
 if [[ -d $sys32_path ]]; then

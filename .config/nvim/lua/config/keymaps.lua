@@ -11,3 +11,6 @@ vim.keymap.set({ "n", "v", "i" }, "<Up>", "<Nop>")
 vim.keymap.set({ "n", "v", "i" }, "<Down>", "<Nop>")
 vim.keymap.set({ "n", "v", "i" }, "<Left>", "<Nop>")
 vim.keymap.set({ "n", "v", "i" }, "<Right>", "<Nop>")
+
+-- Quick save (works whether file explorer is focused or not)
+vim.keymap.set({ "n", "i", "v" }, "<C-s>", "<Esc><cmd>w<cr>", { desc = "Save file" })

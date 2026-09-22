@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Template. bootstrap_herdr substitutes __HOME__ and writes the result to
+  ~/Library/LaunchAgents/com.andperks.herdr.plist, so this stays portable to a
+  machine with a different username.
+
+  Not `brew services start herdr`, for two reasons:
+    - that service sets KeepAlive true, so `herdr server stop` is undone by
+      launchd immediately and the server cannot be stopped cleanly
+    - it runs the binary directly with launchd's empty PATH, so no agent is
+      found and resumed panes come back as empty shells
+-->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.andperks.herdr</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/zsh</string>
+        <string>__HOME__/.config/herdr/scripts/server-launchd.sh</string>
+    </array>
+    <key>RunAtLoad</key>
+    <true/>
+    <!-- false so `herdr server stop` stays stopped. -->
+    <key>KeepAlive</key>
+    <false/>
+    <key>ProcessType</key>
+    <string>Background</string>
+    <key>StandardOutPath</key>
+    <string>/tmp/com.andperks.herdr.out</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/com.andperks.herdr.err</string>
+</dict>
+</plist>

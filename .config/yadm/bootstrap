@@ -136,6 +136,14 @@ bootstrap_claude_profiles() {
             fi
         done
     done
+    # Restore the shared half of settings.json. autoMode stays machine-local:
+    # it names clients, repos and credential locations, and this repo is public.
+    # Push local changes back with: claude-settings-export
+    local sync="${HOME}/.config/claude/sync-settings.py"
+    if [[ -f "${HOME}/.config/claude/settings.shared.json" ]] && [[ -x "$sync" ]]; then
+        "$sync" merge || echo "Warning: Claude settings merge failed; continuing"
+    fi
+
     echo "Claude profiles ready: ~/.claude/work, ~/.claude/personal"
     echo "  Log in per profile: 'claude-work' then /login, 'claude-personal' then /login"
 }

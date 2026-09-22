@@ -1,0 +1,136 @@
+{
+  "advisorModel": "opus",
+  "agentPushNotifEnabled": true,
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
+  "enabledPlugins": {
+    "claude-md-management@claude-plugins-official": true,
+    "code-review@claude-plugins-official": true,
+    "commit-commands@claude-plugins-official": true,
+    "context7@claude-plugins-official": true,
+    "linear@claude-plugins-official": false,
+    "pr-review-toolkit@claude-plugins-official": false,
+    "pyright-lsp@claude-plugins-official": true,
+    "sentry-cli@claude-plugins-official": true,
+    "sentry@claude-plugins-official": true,
+    "supabase@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": true,
+    "worktrunk@worktrunk": true
+  },
+  "extraKnownMarketplaces": {
+    "dev-browser-marketplace": {
+      "source": {
+        "repo": "sawyerhood/dev-browser",
+        "source": "github"
+      }
+    },
+    "worktrunk": {
+      "source": {
+        "repo": "max-sixty/worktrunk",
+        "source": "github"
+      }
+    }
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "command": "$HOME/.claude/hooks/strip-claude-coauthor.sh",
+            "if": "Bash(git commit*)",
+            "type": "command"
+          }
+        ],
+        "matcher": "Bash"
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "command": "bash $HOME/.config/tmux/scripts/claude-pane-registry.sh",
+            "type": "command"
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "command": "bash '${HOME}/.claude/hooks/herdr-agent-state.sh' session",
+            "timeout": 10,
+            "type": "command"
+          }
+        ],
+        "matcher": "^(startup|resume|clear|compact|fork)$"
+      }
+    ]
+  },
+  "permissions": {
+    "allow": [
+      "Bash(cat *)",
+      "Bash(echo *)",
+      "Bash(file *)",
+      "Bash(find *)",
+      "Bash(head *)",
+      "Bash(ls *)",
+      "Bash(pwd)",
+      "Bash(tail *)",
+      "Bash(wc *)",
+      "Bash(which *)",
+      "Bash(brew *)",
+      "Bash(grep *)",
+      "Bash(gh api *)",
+      "Bash(gh issue list*)",
+      "Bash(gh issue view *)",
+      "Bash(gh pr checks*)",
+      "Bash(gh pr diff*)",
+      "Bash(gh pr list*)",
+      "Bash(gh pr status*)",
+      "Bash(gh pr view *)",
+      "Bash(gh repo view *)",
+      "Bash(gh run list*)",
+      "Bash(gh run view *)",
+      "Bash(git *)",
+      "Bash(cd * && git *)",
+      "Bash(yadm *)",
+      "Bash(mise *)",
+      "Bash(npm list*)",
+      "Bash(npm test*)",
+      "Bash(npm install*)",
+      "Bash(npm run build*)",
+      "Bash(npm run dev*)",
+      "Bash(npm run generate*)",
+      "Bash(npm run lint*)",
+      "Bash(npm run start*)",
+      "Bash(npm run test*)",
+      "Bash(bun test*)",
+      "Bash(bun install*)",
+      "Bash(bun run build*)",
+      "Bash(bun run dev*)",
+      "Bash(bun run generate*)",
+      "Bash(bun run lint*)",
+      "Bash(bun run start*)",
+      "Bash(bun run test*)",
+      "Bash(uv *)",
+      "Search(*)",
+      "Read(~/.config/**)",
+      "Read(~/.zshrc)"
+    ],
+    "deny": [
+      "Read(.env)",
+      "Read(.env.*)",
+      "Read(**/secrets/**)",
+      "Read(**/*.pem)",
+      "Read(**/*credential*)"
+    ]
+  },
+  "theme": "auto",
+  "tui": "default",
+  "voice": {
+    "enabled": true,
+    "mode": "hold"
+  },
+  "voiceEnabled": true
+}

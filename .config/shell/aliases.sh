@@ -44,6 +44,13 @@ alias claude-personal='CLAUDE_CONFIG_DIR=~/.claude/personal command claude'
 # Default app launch (Dock/Spotlight) = work profile (~/Library/Application Support/Claude/).
 # To log in to personal for the first time: quit the default Claude instance first
 # so the claude:// auth deep-link routes to the personal instance.
+# Share settings.json across machines. autoMode stays local; it names clients
+# and credential locations, and the dotfiles repo is public.
+#   export = live settings -> tracked copy (run before committing)
+#   diff   = show what export would change
+alias claude-settings-export='~/.config/claude/sync-settings.py export'
+alias claude-settings-diff='~/.config/claude/sync-settings.py diff'
+
 alias claude-app-personal='open -n -a "Claude" --args --user-data-dir="$HOME/Library/Application Support/Claude-Personal"'
 
 # Yadm
@@ -59,7 +66,7 @@ alias yc="yadm commit -m"
 #     and plaintext scrollback beside its config, hence the single file path)
 #   - never ~/.claude/settings.json: it names client repos and describes where
 #     production credentials live. Left out deliberately; do not re-add.
-alias yac="yadm add ~/docs/ ~/.config/alacritty/ ~/.config/git/ ~/.config/helix/ ~/.config/kitty/ ~/.config/lang/ ~/.config/lazygit/ ~/.config/npm/ ~/.config/nvim/ ~/.config/opencode/ ~/.config/shell/ ~/.config/shellcheckrc ~/.config/tmux/ ~/.config/herdr/config.toml ~/.config/herdr/.gitignore ~/.config/herdr/scripts/ ~/.config/herdr-sesh/ ~/.config/vim/ ~/.config/wezterm/ ~/.config/yadm/ ~/.claude/.rgignore ~/.claude/hooks/ ~/.skills ~/.skillkit/lock.json"
+alias yac="yadm add ~/docs/ ~/.config/alacritty/ ~/.config/git/ ~/.config/helix/ ~/.config/kitty/ ~/.config/lang/ ~/.config/lazygit/ ~/.config/npm/ ~/.config/nvim/ ~/.config/opencode/ ~/.config/shell/ ~/.config/shellcheckrc ~/.config/tmux/ ~/.config/herdr/config.toml ~/.config/herdr/.gitignore ~/.config/herdr/scripts/ ~/.config/herdr-sesh/ ~/.config/vim/ ~/.config/wezterm/ ~/.config/yadm/ ~/.config/claude/settings.shared.json ~/.config/claude/sync-settings.py ~/.claude/.rgignore ~/.claude/hooks/ ~/.skills ~/.skillkit/lock.json"
 alias yls="yadm ls-files ~"
 alias yd="yadm diff"
 

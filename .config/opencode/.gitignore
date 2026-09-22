@@ -1,0 +1,22 @@
+# Tracked (not self-ignored), so a new machine has these protections before
+# the first `yac`.
+
+node_modules
+package.json
+package-lock.json
+bun.lock
+
+# Credential for the V2 background service. Must never reach a public repo.
+service.json
+
+# Written by `herdr integration install opencode`; bootstrap reinstalls them.
+plugins/
+herdr-opencode/
+herdr-tui-session.js
+
+# Symlinks into ~/.config/skills with absolute paths, so they do not survive a
+# different username. bootstrap_local_skills recreates them.
+skills/
+
+# Per-machine auth and state.
+auth.json

@@ -13,8 +13,13 @@ export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"   # State data that 
 export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}" # State data but is not important or portable enough
 export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-${TMPDIR:-/tmp}}"  # Non-essential runtime files and other file objects
 
-# ---- Auto-launch sesh/tmux (must run before p10k instant prompt) ---- #
-# This requires console input (fzf), so it must be above instant prompt
+# ---- Machine-specific settings ---- #
+# Loaded here, not just from shell/all.sh, because the multiplexer launch below
+# reads $MUX. all.sh sources it again later; it only exports, so that is safe.
+[[ -f "${XDG_CONFIG_HOME}/shell/custom.sh" ]] && source "${XDG_CONFIG_HOME}/shell/custom.sh"
+
+# ---- Auto-launch the multiplexer (must run before p10k instant prompt) ---- #
+# Needs console input (fzf), so it must be above instant prompt.
 [[ -z $TMUX ]] && source "${XDG_CONFIG_HOME}/shell/tmux.sh"
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.

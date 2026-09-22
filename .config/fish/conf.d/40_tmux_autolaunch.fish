@@ -1,10 +1,12 @@
-# Multiplexer auto-launch — fish port of shell/tmux.sh. Gates match zsh exactly.
+# Multiplexer auto-launch. Fish port of shell/tmux.sh; gates match zsh.
 #
-# $MUX selects one: tmux (default), herdr, or none.
+# $MUX picks tmux (default), herdr, or none.
+# Set it persistently with `set -Ux MUX herdr` — universal variables load
+# before conf.d, so unlike zsh there is no custom.sh ordering to worry about.
 set -q MUX; or set -g MUX tmux
 
 status is-interactive; or exit
-# HERDR_ENV=1 marks a herdr-managed pane: never launch a multiplexer inside one.
+# HERDR_ENV=1 marks a herdr pane: never launch a multiplexer inside one.
 test -z "$TMUX"; and test "$HERDR_ENV" != 1; or exit
 test "$TERM_PROGRAM" != vscode; and test -z "$VSCODE_INJECTION"; or exit
 isatty 0; and isatty 1; or exit

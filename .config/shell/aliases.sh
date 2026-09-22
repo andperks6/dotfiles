@@ -59,7 +59,7 @@ alias yc="yadm commit -m"
 #     and plaintext scrollback beside its config, hence the single file path)
 #   - never ~/.claude/settings.json: it names client repos and describes where
 #     production credentials live. Left out deliberately; do not re-add.
-alias yac="yadm add ~/docs/ ~/.config/alacritty/ ~/.config/git/ ~/.config/helix/ ~/.config/kitty/ ~/.config/lang/ ~/.config/lazygit/ ~/.config/npm/ ~/.config/nvim/ ~/.config/opencode/ ~/.config/shell/ ~/.config/shellcheckrc ~/.config/tmux/ ~/.config/herdr/config.toml ~/.config/herdr/.gitignore ~/.config/herdr-sesh/ ~/.config/vim/ ~/.config/wezterm/ ~/.config/yadm/ ~/.claude/.rgignore ~/.claude/hooks/ ~/.skills ~/.skillkit/lock.json"
+alias yac="yadm add ~/docs/ ~/.config/alacritty/ ~/.config/git/ ~/.config/helix/ ~/.config/kitty/ ~/.config/lang/ ~/.config/lazygit/ ~/.config/npm/ ~/.config/nvim/ ~/.config/opencode/ ~/.config/shell/ ~/.config/shellcheckrc ~/.config/tmux/ ~/.config/herdr/config.toml ~/.config/herdr/.gitignore ~/.config/herdr/scripts/ ~/.config/herdr-sesh/ ~/.config/vim/ ~/.config/wezterm/ ~/.config/yadm/ ~/.claude/.rgignore ~/.claude/hooks/ ~/.skills ~/.skillkit/lock.json"
 alias yls="yadm ls-files ~"
 alias yd="yadm diff"
 

@@ -140,19 +140,23 @@ bootstrap_daily_log() {
     fi
 }
 
+# Plugin revisions, pinned so a new machine gets the versions tested here.
+# herdr stores plugins outside this repo and has no lockfile, so the pin lives
+# here. Bump deliberately, then re-run this function.
+HERDR_PLUGIN_SESH_REF="45a85375d32521c2288305366a26672800bc3482"  # 0.12.0 + 4
+HERDR_PLUGIN_FZF_URL_REF="9638f2d6dfeaf690995bf3caca7a37a7fd8e7dcc"
+
 bootstrap_herdr() {
-    # herdr is installed by the Brewfile; this wires up the parts brew cannot:
-    # plugins (built from source at install time) and the Claude Code
-    # integration hook that makes `claude --resume` work after a restart.
-    # Idempotent — every step checks before acting.
+    # herdr itself comes from the Brewfile. This adds what brew cannot: plugins
+    # (built from source) and the Claude hook behind `claude --resume`.
+    # Idempotent.
     if ! command -v herdr >/dev/null 2>&1; then
         echo "Skipping herdr setup: herdr not installed"
         return
     fi
 
-    # Plugins build from source, so their toolchains must be on PATH first.
-    # herdr-plugin-sesh needs Go >= 1.26 (pinned in ~/.config/mise/config.toml);
-    # a bare `go` may be older or absent, so prefer mise's shim.
+    # Plugins build from source. herdr-plugin-sesh needs Go >= 1.26, pinned in
+    # ~/.config/mise/config.toml, so put mise's shims on PATH first.
     if command -v mise >/dev/null 2>&1; then
         eval "$(mise env -s bash 2>/dev/null)" || true
     fi
@@ -160,32 +164,29 @@ bootstrap_herdr() {
     local installed
     installed=$(herdr plugin list 2>/dev/null || true)
 
-    # Replaces the tmux sesh picker (bound to prefix+s) and `sesh last`
-    # (prefix+shift+L). sesh has no herdr backend yet: joshmedeski/sesh#460.
+    # Replaces the tmux sesh picker (prefix+s) and `sesh last` (prefix+shift+L).
+    # sesh has no herdr backend yet: joshmedeski/sesh#460.
     if ! printf '%s' "$installed" | grep -q "sesh"; then
         echo "Installing herdr-plugin-sesh..."
-        herdr plugin install fullerzz/herdr-plugin-sesh -y \
+        herdr plugin install fullerzz/herdr-plugin-sesh --ref "$HERDR_PLUGIN_SESH_REF" -y \
             || echo "Warning: herdr-plugin-sesh install failed (needs git + Go >= 1.26); continuing"
     fi
 
-    # Replaces the wfxr/tmux-fzf-url plugin (prefix+u).
+    # Replaces wfxr/tmux-fzf-url (prefix+u).
     if ! printf '%s' "$installed" | grep -q "fzf-url"; then
         echo "Installing herdr-fzf-url..."
-        herdr plugin install kaar/herdr-fzf-url -y \
+        herdr plugin install kaar/herdr-fzf-url --ref "$HERDR_PLUGIN_FZF_URL_REF" -y \
             || echo "Warning: herdr-fzf-url install failed; continuing"
     fi
 
-    # Writes hooks/herdr-agent-state.sh + settings.json entries so herdr learns
-    # each pane's Claude session id, and can replay `claude --resume <id>` after
-    # a server restart. This is the native replacement for
+    # Writes a SessionStart hook so herdr learns each pane's Claude session id
+    # and can replay `claude --resume <id>` after a restart. Replaces
     # ~/.config/tmux/scripts/claude-pane-registry.sh.
     #
-    # Installed once per *distinct* settings.json. bootstrap_claude_profiles
-    # symlinks work/personal settings.json back to ~/.claude/settings.json, so
-    # on this machine all three profiles resolve to one file — installing per
-    # directory would register the same SessionStart hook three times and run
-    # it three times per session. Deduplicate on the resolved path so the loop
-    # still does the right thing if a profile is ever given its own settings.
+    # Once per *distinct* settings.json: bootstrap_claude_profiles symlinks the
+    # work and personal files back to ~/.claude/settings.json, so installing per
+    # directory would register the same hook three times and run it three times
+    # per session. Dedupe on the resolved path, in case a profile ever diverges.
     local -a done_targets=()
     local profile_dir resolved already
     for profile_dir in "${HOME}/.claude" "${HOME}/.claude/work" "${HOME}/.claude/personal"; do
@@ -204,8 +205,8 @@ bootstrap_herdr() {
     done
     echo "herdr Claude integration installed (verify with: herdr integration status)"
 
-    # ~/.config/.envrc pins this repo to the work Claude profile so a replayed
-    # `claude --resume` resolves. direnv needs a one-time approval per machine.
+    # ~/.config/.envrc pins this repo to the work Claude profile. direnv blocks
+    # an unapproved .envrc, so approve it here.
     if command -v direnv >/dev/null 2>&1 && [[ -f "${HOME}/.config/.envrc" ]]; then
         direnv allow "${HOME}/.config" 2>/dev/null \
             || echo "Warning: could not direnv allow ~/.config; run it by hand"

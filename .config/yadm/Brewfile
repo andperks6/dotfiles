@@ -25,6 +25,10 @@ brew "ripgrep"
 # brew "starship"  # using powerlevel10k instead
 brew "tlrc"
 brew "tmux"
+# Agent-aware multiplexer being trialled as the tmux replacement.
+# Config in ~/.config/herdr/config.toml; plugins and the Claude integration
+# are installed by bootstrap_herdr in ~/.config/yadm/bootstrap.
+brew "herdr"
 brew "tree-sitter"
 brew "wget"
 brew "yq"

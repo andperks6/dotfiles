@@ -140,6 +140,81 @@ bootstrap_daily_log() {
     fi
 }
 
+bootstrap_herdr() {
+    # herdr is installed by the Brewfile; this wires up the parts brew cannot:
+    # plugins (built from source at install time) and the Claude Code
+    # integration hook that makes `claude --resume` work after a restart.
+    # Idempotent — every step checks before acting.
+    if ! command -v herdr >/dev/null 2>&1; then
+        echo "Skipping herdr setup: herdr not installed"
+        return
+    fi
+
+    # Plugins build from source, so their toolchains must be on PATH first.
+    # herdr-plugin-sesh needs Go >= 1.26 (pinned in ~/.config/mise/config.toml);
+    # a bare `go` may be older or absent, so prefer mise's shim.
+    if command -v mise >/dev/null 2>&1; then
+        eval "$(mise env -s bash 2>/dev/null)" || true
+    fi
+
+    local installed
+    installed=$(herdr plugin list 2>/dev/null || true)
+
+    # Replaces the tmux sesh picker (bound to prefix+s) and `sesh last`
+    # (prefix+shift+L). sesh has no herdr backend yet: joshmedeski/sesh#460.
+    if ! printf '%s' "$installed" | grep -q "sesh"; then
+        echo "Installing herdr-plugin-sesh..."
+        herdr plugin install fullerzz/herdr-plugin-sesh -y \
+            || echo "Warning: herdr-plugin-sesh install failed (needs git + Go >= 1.26); continuing"
+    fi
+
+    # Replaces the wfxr/tmux-fzf-url plugin (prefix+u).
+    if ! printf '%s' "$installed" | grep -q "fzf-url"; then
+        echo "Installing herdr-fzf-url..."
+        herdr plugin install kaar/herdr-fzf-url -y \
+            || echo "Warning: herdr-fzf-url install failed; continuing"
+    fi
+
+    # Writes hooks/herdr-agent-state.sh + settings.json entries so herdr learns
+    # each pane's Claude session id, and can replay `claude --resume <id>` after
+    # a server restart. This is the native replacement for
+    # ~/.config/tmux/scripts/claude-pane-registry.sh.
+    #
+    # Installed once per *distinct* settings.json. bootstrap_claude_profiles
+    # symlinks work/personal settings.json back to ~/.claude/settings.json, so
+    # on this machine all three profiles resolve to one file — installing per
+    # directory would register the same SessionStart hook three times and run
+    # it three times per session. Deduplicate on the resolved path so the loop
+    # still does the right thing if a profile is ever given its own settings.
+    local -a done_targets=()
+    local profile_dir resolved already
+    for profile_dir in "${HOME}/.claude" "${HOME}/.claude/work" "${HOME}/.claude/personal"; do
+        [[ -d "$profile_dir" ]] || continue
+        # Resolve through the symlink; fall back to the literal path if absent.
+        resolved=$(cd "$profile_dir" 2>/dev/null && pwd -P)/settings.json
+        [[ -e "${profile_dir}/settings.json" ]] && \
+            resolved=$(python3 -c 'import os,sys;print(os.path.realpath(sys.argv[1]))' \
+                       "${profile_dir}/settings.json" 2>/dev/null || echo "$resolved")
+        already=0
+        for t in "${done_targets[@]}"; do [[ "$t" == "$resolved" ]] && already=1; done
+        (( already )) && continue
+        done_targets+=("$resolved")
+        CLAUDE_CONFIG_DIR="$profile_dir" herdr integration install claude >/dev/null 2>&1 \
+            || echo "Warning: herdr claude integration failed for ${profile_dir}; continuing"
+    done
+    echo "herdr Claude integration installed (verify with: herdr integration status)"
+
+    # ~/.config/.envrc pins this repo to the work Claude profile so a replayed
+    # `claude --resume` resolves. direnv needs a one-time approval per machine.
+    if command -v direnv >/dev/null 2>&1 && [[ -f "${HOME}/.config/.envrc" ]]; then
+        direnv allow "${HOME}/.config" 2>/dev/null \
+            || echo "Warning: could not direnv allow ~/.config; run it by hand"
+    fi
+
+    echo "herdr ready. Start it with 'herdr'; to restore workspaces at login:"
+    echo "  brew services start herdr"
+}
+
 bootstrap_local_skills() {
     # Source-of-truth for agent-neutral skills tracked in dotfiles. Each entry
     # in ~/.config/skills/<name>/ is exposed to every installed agent via
@@ -199,6 +274,7 @@ bootstrap_libraries
 bootstrap_crypt
 bootstrap_claude_profiles
 bootstrap_daily_log
+bootstrap_herdr
 bootstrap_local_skills
 bootstrap_skillkit
 

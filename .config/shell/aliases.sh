@@ -55,7 +55,13 @@ alias yp="yadm push"
 alias ypl="yadm pull"
 alias ya="yadm add -u"
 alias yc="yadm commit -m"
-alias yac="yadm add ~/docs/ ~/.config/alacritty/ ~/.config/git/ ~/.config/helix/ ~/.config/kitty/ ~/.config/lang/ ~/.config/lazygit/ ~/.config/npm/ ~/.config/nvim/ ~/.config/opencode/ ~/.config/shell/ ~/.config/shellcheckrc ~/.config/tmux/ ~/.config/vim/ ~/.config/wezterm/ ~/.config/yadm/ ~/.claude/settings.json ~/.claude/.rgignore ~/.claude/hooks/ ~/.skills ~/.skillkit/lock.json"
+# NOTE: this repo is public. Two rules for anything added here:
+#   - never a directory that a tool writes runtime state into (herdr drops
+#     session.json and plaintext scrollback next to its config, hence the
+#     single-file path and the .gitignore in ~/.config/herdr/)
+#   - never ~/.claude/settings.json: it names client repos and describes where
+#     production credentials live. Kept out deliberately; do not re-add.
+alias yac="yadm add ~/docs/ ~/.config/alacritty/ ~/.config/git/ ~/.config/helix/ ~/.config/kitty/ ~/.config/lang/ ~/.config/lazygit/ ~/.config/npm/ ~/.config/nvim/ ~/.config/opencode/ ~/.config/shell/ ~/.config/shellcheckrc ~/.config/tmux/ ~/.config/herdr/config.toml ~/.config/herdr/.gitignore ~/.config/herdr-sesh/ ~/.config/vim/ ~/.config/wezterm/ ~/.config/yadm/ ~/.claude/.rgignore ~/.claude/hooks/ ~/.skills ~/.skillkit/lock.json"
 alias yls="yadm ls-files ~"
 alias yd="yadm diff"
 

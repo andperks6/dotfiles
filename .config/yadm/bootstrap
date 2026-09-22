@@ -179,9 +179,22 @@ bootstrap_herdr() {
             || echo "Warning: herdr-fzf-url install failed; continuing"
     fi
 
-    # Writes a SessionStart hook so herdr learns each pane's Claude session id
-    # and can replay `claude --resume <id>` after a restart. Replaces
-    # ~/.config/tmux/scripts/claude-pane-registry.sh.
+    # Agent integrations report each pane's native session id, which is what
+    # lets herdr replay `claude --resume <id>` (and the equivalents) after a
+    # restart. Installed only where the agent exists, so each machine
+    # configures itself: hermes is set up only on the box that runs it.
+    local pair agent bin
+    for pair in codex:codex opencode:opencode pi:pi hermes:hermes; do
+        agent=${pair%%:*}
+        bin=${pair##*:}
+        command -v "$bin" >/dev/null 2>&1 || continue
+        herdr integration install "$agent" >/dev/null 2>&1 \
+            || echo "Warning: herdr ${agent} integration failed; continuing"
+    done
+
+    # Claude is separate because of the profile symlinks below.
+    # Writes a SessionStart hook so herdr learns each pane's Claude session id.
+    # Replaces ~/.config/tmux/scripts/claude-pane-registry.sh.
     #
     # Once per *distinct* settings.json: bootstrap_claude_profiles symlinks the
     # work and personal files back to ~/.claude/settings.json, so installing per
@@ -212,8 +225,31 @@ bootstrap_herdr() {
             || echo "Warning: could not direnv allow ~/.config; run it by hand"
     fi
 
-    echo "herdr ready. Start it with 'herdr'; to restore workspaces at login:"
-    echo "  brew services start herdr"
+    bootstrap_herdr_launchagent
+    echo "herdr ready. Attach with 'herdr'."
+}
+
+bootstrap_herdr_launchagent() {
+    # Restore workspaces at login, the equivalent of @continuum-restore.
+    # Written from a template so the plist carries this machine's $HOME.
+    # Deliberately not `brew services start herdr`; see the template comment.
+    [[ "$(uname -s)" == "Darwin" ]] || return 0
+    local src="${HOME}/.config/herdr/scripts/com.andperks.herdr.plist.in"
+    local dest="${HOME}/Library/LaunchAgents/com.andperks.herdr.plist"
+    local label="com.andperks.herdr"
+    [[ -f "$src" ]] || { echo "Skipping herdr LaunchAgent: no template"; return 0; }
+
+    chmod +x "${HOME}/.config/herdr/scripts/server-launchd.sh" 2>/dev/null || true
+    mkdir -p "${HOME}/Library/LaunchAgents"
+    sed "s|__HOME__|${HOME}|g" "$src" > "$dest"
+
+    launchctl bootout "gui/$(id -u)/${label}" 2>/dev/null || true
+    if launchctl bootstrap "gui/$(id -u)" "$dest" 2>/dev/null; then
+        echo "✓ herdr: LaunchAgent '${label}' loaded; workspaces restore at login."
+    else
+        echo "⚠ herdr: launchctl bootstrap failed — load manually:"
+        echo "    launchctl bootstrap gui/\$(id -u) '$dest'"
+    fi
 }
 
 bootstrap_local_skills() {

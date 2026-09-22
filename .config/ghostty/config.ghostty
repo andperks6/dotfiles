@@ -9,3 +9,23 @@ theme = dark:Synthwave, light:Modus Operandi
 # relaunch. Each restored tab re-runs the login shell, and shell/tmux.sh
 # reattaches it to the detached tmux session matching its directory.
 window-save-state = always
+
+# ---- herdr: cmd+1..9 to switch workspaces ----
+# herdr runs as a single Ghostty tab holding every project, so the old
+# "cmd+N picks a project" reflex has to reach herdr instead of Ghostty.
+# herdr binds ctrl+shift+1..9 directly (keys.switch_workspace in
+# ~/.config/herdr/config.toml); these lines just forward cmd+N to it as
+# CSI-u — \x1b[<codepoint>;6u, where 49..57 are '1'..'9' and 6 is ctrl+shift.
+#
+# Commented out on purpose while tmux and herdr run side by side: enabling
+# them replaces Ghostty's own tab switching everywhere, including the tmux
+# tabs. Verify ctrl+shift+1 works inside herdr FIRST, then uncomment.
+# keybind = super+one=text:\x1b[49;6u
+# keybind = super+two=text:\x1b[50;6u
+# keybind = super+three=text:\x1b[51;6u
+# keybind = super+four=text:\x1b[52;6u
+# keybind = super+five=text:\x1b[53;6u
+# keybind = super+six=text:\x1b[54;6u
+# keybind = super+seven=text:\x1b[55;6u
+# keybind = super+eight=text:\x1b[56;6u
+# keybind = super+nine=text:\x1b[57;6u

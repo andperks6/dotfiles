@@ -20,7 +20,17 @@ alias gundo="git restore ."
 
 # Claude Code profiles — auto-switches based on working directory.
 # Work repos live under ~/dev/work/, everything else is personal.
+#
+# An already-exported CLAUDE_CONFIG_DIR always wins, so a directory can pin its
+# own profile with an .envrc (direnv is hooked in ~/.zshrc). ~/.config needs
+# this: it maps to *personal* by path but is worked on under the *work*
+# profile, and without the override herdr's `claude --resume <id>` would
+# replay a work session into a personal profile and silently find no session.
 claude() {
+  if [[ -n "$CLAUDE_CONFIG_DIR" ]]; then
+    command claude "$@"
+    return
+  fi
   local profile
   case "$PWD/" in
     "$HOME"/dev/work/*) profile=work ;;

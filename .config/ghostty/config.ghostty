@@ -18,12 +18,12 @@ window-save-state = always
 #
 # Commented out while tmux and herdr run side by side, because enabling them
 # removes Ghostty's own cmd+N tab switching. Uncomment once tmux is retired.
-# keybind = super+one=text:\x1b[49;6u
-# keybind = super+two=text:\x1b[50;6u
-# keybind = super+three=text:\x1b[51;6u
-# keybind = super+four=text:\x1b[52;6u
-# keybind = super+five=text:\x1b[53;6u
-# keybind = super+six=text:\x1b[54;6u
-# keybind = super+seven=text:\x1b[55;6u
-# keybind = super+eight=text:\x1b[56;6u
-# keybind = super+nine=text:\x1b[57;6u
+keybind = super+one=text:\x1b[49;6u
+keybind = super+two=text:\x1b[50;6u
+keybind = super+three=text:\x1b[51;6u
+keybind = super+four=text:\x1b[52;6u
+keybind = super+five=text:\x1b[53;6u
+keybind = super+six=text:\x1b[54;6u
+keybind = super+seven=text:\x1b[55;6u
+keybind = super+eight=text:\x1b[56;6u
+keybind = super+nine=text:\x1b[57;6u

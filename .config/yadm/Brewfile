@@ -74,7 +74,6 @@ brew "k9s"
 # Terminals
 cask "alacritty"
 cask "ghostty"
-cask "manaflow-ai/cmux/cmux"
 cask "wezterm"
 cask "warp"
 

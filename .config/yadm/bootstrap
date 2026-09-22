@@ -7,7 +7,6 @@ bootstrap_dir=$(dirname $0)
 BREW_TAPS=(
     anomalyco/tap        # opencode-v2
     schpet/tap           # linear
-    manaflow-ai/cmux     # cmux
     pear-devs/pear       # pear-desktop
 )
 
@@ -282,10 +281,13 @@ bootstrap_local_skills() {
         echo "Skipping local skills: no ~/.config/skills directory"
         return
     fi
+    # opencode V2 searches ~/.config/opencode/skills; the V1 path
+    # ~/.opencode/skills is no longer read. (V2 also falls back to
+    # ~/.claude/skills, which is where skillkit installs.)
     local agent_dirs=(
         "${HOME}/.claude/skills"
         "${HOME}/.codex/skills"
-        "${HOME}/.opencode/skills"
+        "${HOME}/.config/opencode/skills"
     )
     for skill_path in "${source_dir}"/*; do
         [[ -d "$skill_path" ]] || continue

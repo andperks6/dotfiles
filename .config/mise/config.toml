@@ -4,7 +4,7 @@
 [tools]
 bun = "1.3"
 dotnet = "10"
-golang = "1.25"
+golang = "1.26"
 gradle = "9.2"
 java = "temurin-21"
 "github:JetBrains/kotlin" = "2.2"

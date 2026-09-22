@@ -1,47 +1,34 @@
-# herdr-plugin-sesh — https://github.com/fullerzz/herdr-plugin-sesh
-#
-# Port of ~/.config/sesh/sesh.toml. sesh itself has no herdr backend yet
-# (joshmedeski/sesh#460), so this plugin stands in for it: same TOML session
-# list, same zoxide history, same "jump to last" action.
-#
-# Bound to prefix+s in ~/.config/herdr/config.toml, matching the
-# `bind-key "s" run-shell "sesh connect ..."` line in tmux.conf.
+# herdr-plugin-sesh, ported from ~/.config/sesh/sesh.toml.
+# sesh has no herdr backend yet (joshmedeski/sesh#460), so this stands in.
+# Bound to prefix+s in ~/.config/herdr/config.toml.
 
 version = 1
 
 [list]
 cache = true
-# Mirrors the tmux picker's `sesh list -t -z -c` flag order: live sessions
-# first, then configured projects, then zoxide history.
-#   herdr  = running workspaces      (was: -t, tmux sessions)
-#   config = the [[workspace]] list  (was: -c, configured sessions)
-#   zoxide = frecency directories    (was: -z)
+# Same order as `sesh list -t -z -c`:
+#   herdr = running workspaces, config = the list below, zoxide = frecency dirs.
 source_order = ["herdr", "config", "zoxide", "dir"]
 
 [naming]
-# One path component, so ~/dev/work/crewview shows as "crewview" —
-# the same shape as tmux's `automatic-rename-format "#{b:pane_current_path}"`.
+# ~/dev/work/crewview shows as "crewview".
 path_components = 1
 
 [picker]
 show_icons = true
 show_path = true
 show_preview = true
-# Inherit herdr's theme, which is itself set to "terminal" and follows
-# Ghostty's light/dark. Keeps the picker readable in both.
 herdr_theme_inherit = true
-# Surface the previous workspace in the list as well as on prefix+shift+L.
 show_last_workspace = true
-# Sort running workspaces by agent state, so a blocked Claude floats up.
+# Float a blocked agent to the top.
 workspace_sort = "agent"
 prompt = "⚡  "
 placeholder = "Search workspaces"
 
 [workspace_defaults]
-# eza and bat are both in the Brewfile.
 preview = "eza --icons=always --color=always -la {}"
 
-# ---- Configured workspaces (were: [[session]] in sesh.toml) ----
+# Were [[session]] in sesh.toml.
 [[workspace]]
 name = "dotfiles"
 path = "~/.config"

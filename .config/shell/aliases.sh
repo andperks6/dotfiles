@@ -21,11 +21,10 @@ alias gundo="git restore ."
 # Claude Code profiles — auto-switches based on working directory.
 # Work repos live under ~/dev/work/, everything else is personal.
 #
-# An already-exported CLAUDE_CONFIG_DIR always wins, so a directory can pin its
-# own profile with an .envrc (direnv is hooked in ~/.zshrc). ~/.config needs
-# this: it maps to *personal* by path but is worked on under the *work*
-# profile, and without the override herdr's `claude --resume <id>` would
-# replay a work session into a personal profile and silently find no session.
+# An exported CLAUDE_CONFIG_DIR wins, so a directory can pin its own profile
+# with an .envrc. ~/.config needs that: it maps to personal by path but is
+# worked on under work, and herdr's replayed `claude --resume` would otherwise
+# look for the session in the wrong profile.
 claude() {
   if [[ -n "$CLAUDE_CONFIG_DIR" ]]; then
     command claude "$@"
@@ -55,12 +54,11 @@ alias yp="yadm push"
 alias ypl="yadm pull"
 alias ya="yadm add -u"
 alias yc="yadm commit -m"
-# NOTE: this repo is public. Two rules for anything added here:
-#   - never a directory that a tool writes runtime state into (herdr drops
-#     session.json and plaintext scrollback next to its config, hence the
-#     single-file path and the .gitignore in ~/.config/herdr/)
+# This repo is public. Two rules for anything added here:
+#   - no directory a tool writes runtime state into (herdr drops session.json
+#     and plaintext scrollback beside its config, hence the single file path)
 #   - never ~/.claude/settings.json: it names client repos and describes where
-#     production credentials live. Kept out deliberately; do not re-add.
+#     production credentials live. Left out deliberately; do not re-add.
 alias yac="yadm add ~/docs/ ~/.config/alacritty/ ~/.config/git/ ~/.config/helix/ ~/.config/kitty/ ~/.config/lang/ ~/.config/lazygit/ ~/.config/npm/ ~/.config/nvim/ ~/.config/opencode/ ~/.config/shell/ ~/.config/shellcheckrc ~/.config/tmux/ ~/.config/herdr/config.toml ~/.config/herdr/.gitignore ~/.config/herdr-sesh/ ~/.config/vim/ ~/.config/wezterm/ ~/.config/yadm/ ~/.claude/.rgignore ~/.claude/hooks/ ~/.skills ~/.skillkit/lock.json"
 alias yls="yadm ls-files ~"
 alias yd="yadm diff"

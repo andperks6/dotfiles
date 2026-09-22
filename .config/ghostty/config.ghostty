@@ -11,15 +11,13 @@ theme = dark:Synthwave, light:Modus Operandi
 window-save-state = always
 
 # ---- herdr: cmd+1..9 to switch workspaces ----
-# herdr runs as a single Ghostty tab holding every project, so the old
-# "cmd+N picks a project" reflex has to reach herdr instead of Ghostty.
-# herdr binds ctrl+shift+1..9 directly (keys.switch_workspace in
-# ~/.config/herdr/config.toml); these lines just forward cmd+N to it as
-# CSI-u — \x1b[<codepoint>;6u, where 49..57 are '1'..'9' and 6 is ctrl+shift.
+# herdr runs in one Ghostty tab holding every project, so cmd+N has to reach
+# herdr rather than Ghostty. herdr binds ctrl+shift+1..9 (keys.switch_workspace);
+# these forward cmd+N to it as CSI-u: \x1b[<code>;6u, 49..57 are '1'..'9',
+# 6 is ctrl+shift.
 #
-# Commented out on purpose while tmux and herdr run side by side: enabling
-# them replaces Ghostty's own tab switching everywhere, including the tmux
-# tabs. Verify ctrl+shift+1 works inside herdr FIRST, then uncomment.
+# Commented out while tmux and herdr run side by side, because enabling them
+# removes Ghostty's own cmd+N tab switching. Uncomment once tmux is retired.
 # keybind = super+one=text:\x1b[49;6u
 # keybind = super+two=text:\x1b[50;6u
 # keybind = super+three=text:\x1b[51;6u

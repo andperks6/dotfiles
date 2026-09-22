@@ -10,8 +10,10 @@
 onboarding = false
 
 [theme]
-name = "vesper"
-auto_switch = false
+# tmux: status-style fg=default,bg=default. The `terminal` theme inherits the
+# host palette, so Ghostty's Modus Operandi / Synthwave switch drives herdr too.
+# herdr themes are global; there is no per-workspace theme key.
+name = "terminal"
 
 [terminal]
 # tmux: splits carried -c "#{pane_current_path}".

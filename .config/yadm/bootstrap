@@ -2,8 +2,20 @@
 
 bootstrap_dir=$(dirname $0)
 
+# Third-party taps used by the Brewfile. Homebrew 7 refuses to load formulae
+# from an untrusted tap, which fails `brew bundle` on a new machine.
+BREW_TAPS=(
+    anomalyco/tap        # opencode-v2
+    schpet/tap           # linear
+    manaflow-ai/cmux     # cmux
+    pear-devs/pear       # pear-desktop
+)
+
 bootstrap_deps() {
     if [[ -x "$(command -v brew)" ]]; then
+        for tap in "${BREW_TAPS[@]}"; do
+            brew trust "$tap" >/dev/null 2>&1 || true
+        done
         brew bundle --file "${bootstrap_dir}/Brewfile"
         brew pin tmux
     fi

@@ -48,7 +48,10 @@ brew "sesh"
 brew "yadm"
 
 cask "claude-code@latest"
-brew "anomalyco/tap/opencode"
+# V2. Conflicts with the v1 "opencode" formula: both install an `opencode`
+# binary, so brew cannot hold both. V1 config is read unchanged by V2; roll
+# back with `brew uninstall opencode-v2 && brew install opencode`.
+brew "anomalyco/tap/opencode-v2"
 cask "codex"
 brew "schpet/tap/linear"
 

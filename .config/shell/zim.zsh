@@ -53,6 +53,13 @@ zstyle ':zim:zmodule' use 'degit'
 [[ ! -d ${XDG_CACHE_HOME}/zsh ]] && mkdir -p ${XDG_CACHE_HOME}/zsh
 zstyle ':zim:completion' dumpfile "${XDG_CACHE_HOME}/zsh/zcompdump"
 
+# zcompile writes the .zwc read-only, then cannot overwrite it when the dump
+# changes: "can't write zwc file". Drop a stale one so it recompiles.
+() {
+  local dump=${XDG_CACHE_HOME}/zsh/zcompdump
+  [[ -f ${dump}.zwc && ! -w ${dump}.zwc && ${dump}.zwc -ot ${dump} ]] && rm -f ${dump}.zwc
+}
+
 #
 # git
 #

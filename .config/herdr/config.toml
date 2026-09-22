@@ -1,0 +1,128 @@
+# herdr configuration — https://herdr.dev/docs/config-reference/
+#
+# Ported from ~/.config/tmux/tmux.conf. Where a tmux feature has a herdr
+# equivalent the tmux line is named in the comment, so the two can be diffed
+# while both are installed. Print every default with `herdr --default-config`,
+# validate this file with `herdr config check`, and apply it to a running
+# server with `herdr server reload-config` (or prefix+shift+r).
+#
+# NOTE: herdr writes session.json and session-history.json into this same
+# directory. Those hold raw pane scrollback and are excluded by .gitignore —
+# track this file by path, never `~/.config/herdr/` as a directory.
+
+# Onboarding already completed; skip the first-run chooser on new machines.
+onboarding = false
+
+[theme]
+# tmux: `set -g status-style fg=default,bg=default`. The `terminal` theme
+# inherits the host palette, so herdr follows Ghostty's light/dark switch
+# (Modus Operandi / Synthwave) with no appearance detection of its own.
+# Preferred over theme.auto_switch, which would force a guess at a
+# built-in light/dark pair that does not match either Ghostty theme.
+name = "terminal"
+
+[terminal]
+# tmux: every split/new-window binding carried `-c "#{pane_current_path}"`.
+# "follow" is herdr's equivalent — new panes, tabs and workspaces inherit the
+# source pane's directory.
+new_cwd = "follow"
+
+# tmux: `set -g allow-passthrough on`, for inline images in Ghostty.
+kitty_graphics = true
+
+[update]
+# Homebrew owns the herdr version (see ~/.config/yadm/Brewfile), so the
+# background version check only produces upgrade prompts that cannot be acted
+# on from inside herdr. manifest_check stays on: it refreshes agent-state
+# detection, which is what drives the sidebar's blocked/working/idle marks.
+version_check = false
+manifest_check = true
+
+[session]
+# Replay `claude --resume <id>` (and the equivalent for codex/opencode) into
+# panes after a server restart. This is the native replacement for
+# tmux/scripts/claude-pane-registry.sh + resurrect-post-restore.sh.
+# Requires `herdr integration install claude`, run by yadm bootstrap.
+resume_agents_on_restore = true
+
+[experimental]
+# tmux: `set -g @resurrect-capture-pane-contents 'on'`. Restores recent pane
+# contents across a full server restart.
+#
+# Two caveats that did not apply to the tmux setup:
+#   - Scrollback is written to session-history.json in plaintext. Anything
+#     echoed into a pane (tokens, env dumps) lands on disk unencrypted.
+#   - herdr#1156: a crash between the session.json and session-history.json
+#     writes can pair a new layout with stale history, showing the wrong
+#     scrollback under a pane. tmux/scripts/resurrect-post-save.sh existed to
+#     fix exactly this class of bug in resurrect; herdr has no fix yet.
+pane_history = true
+
+[ui]
+# tmux: `set -g mouse on`, plus the per-app WheelUpPane/WheelDownPane
+# whitelist. herdr needs no whitelist — panes that request mouse reporting
+# (lazygit, nvim, btop) receive wheel events directly, and everything else
+# scrolls herdr's own scrollback.
+mouse_capture = true
+mouse_scroll_lines = 3
+
+# tmux: `bind -T copy-mode-vi y send-keys -X copy-selection-and-cancel`.
+copy_on_select = true
+
+# Workspaces are what Ghostty tabs used to be, so the sidebar is the tab bar.
+# It also carries each agent's state, which is the reason for the migration.
+sidebar_width = 26
+
+[keys]
+# tmux: `set -g prefix \``. Pressing it twice sends a literal backtick, which
+# is the same escape hatch as tmux's `bind-key \` send-prefix`.
+prefix = "`"
+
+# --- Workspaces (were: tmux sessions, one per Ghostty tab) ---------------
+# Direct chord, no prefix, so Ghostty can forward cmd+1..9 to it later
+# (see the commented block in ~/.config/ghostty/config.ghostty).
+switch_workspace = "ctrl+shift+1..9"
+# Modifier-free, so they survive terminals with partial modifier reporting.
+# (`bracketleft`/`bracketright` are rejected by herdr; the literal characters
+# are the accepted spelling.)
+previous_workspace = "prefix+["
+next_workspace = "prefix+]"
+
+# --- Tabs (were: tmux windows) -------------------------------------------
+# prefix+1..9, prefix+n and prefix+p keep their tmux meanings. This is why
+# workspaces had to go on a different chord rather than taking prefix+n/p.
+
+# `settings` moves off prefix+s so the sesh picker can have it, matching the
+# `bind-key "s" run-shell "sesh connect ..."` line in tmux.conf.
+settings = "prefix+alt+s"
+
+# tmux: `bind-key "L" run-shell "sesh last"`.
+[[keys.command]]
+key = "prefix+shift+l"
+type = "plugin_action"
+command = "fullerzz.sesh.last"
+description = "Jump to the previous workspace"
+
+# tmux: the fzf-tmux sesh picker on prefix+s.
+[[keys.command]]
+key = "prefix+s"
+type = "plugin_action"
+command = "fullerzz.sesh.open-picker"
+description = "sesh workspace picker"
+
+# tmux: `set -g @plugin 'wfxr/tmux-fzf-url'`.
+[[keys.command]]
+key = "prefix+u"
+type = "plugin_action"
+command = "fzf-url"
+description = "fzf open URL from pane"
+
+# tmux had no equivalent; lazygit was launched by hand. Popup keeps the
+# layout intact, which is what the tmux `display-popup` idiom would have done.
+# On prefix+alt+g, not prefix+g: prefix+g is herdr's `goto` picker.
+[[keys.command]]
+key = "prefix+alt+g"
+type = "popup"
+command = "lazygit"
+width = "90%"
+height = "90%"

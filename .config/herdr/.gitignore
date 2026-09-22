@@ -1,0 +1,17 @@
+# herdr writes runtime state beside its config. None of it belongs in a
+# public dotfiles repo:
+#   session.json          workspace/tab/pane layout, cwds, agent session ids
+#   session-history.json  raw pane scrollback in plaintext (see
+#                         experimental.pane_history in config.toml)
+session.json
+session-history.json
+session*.json
+
+# Sockets, logs, and the plugin checkouts/registry. Plugins are reinstalled
+# from source by bootstrap_herdr, so the checkouts are machine state, not config.
+*.sock
+*.log
+logs/
+plugins/
+plugins.json
+.plugins.lock
